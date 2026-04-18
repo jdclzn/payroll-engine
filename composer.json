@@ -1,0 +1,61 @@
+{
+  "name": "jdclzn/payroll-engine",
+  "version": "1.0.0",
+  "description": "Reusable Laravel payroll engine for scalable, auditable, and customizable payroll computation.",
+  "keywords": [
+    "payroll",
+    "payroll-engine",
+    "payroll-engine-laravel",
+    "payroll-engine-php",
+    "moneyphp",
+    "jdclzn"
+  ],
+  "homepage": "https://github.com/jdaclizon23/payroll-engine",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Jovanie Daclizon",
+      "email": "jovanie.daclizon@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "illuminate/support": "^12.0|^13.0",
+    "moneyphp/money": "^4.8"
+  },
+  "require-dev": {
+    "illuminate/database": "^12.56|^13.0",
+    "pestphp/pest": "^3.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jdclzn\\PayrollEngine\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jdclzn\\PayrollEngine\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "@php vendor/bin/pest"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Jdclzn\\PayrollEngine\\PayrollEngineServiceProvider"
+      ],
+      "aliases": {
+        "PayrollEngine": "Jdclzn\\PayrollEngine\\PayrollEngineFacade"
+      }
+    }
+  }
+}
