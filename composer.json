@@ -43,7 +43,7 @@
   "scripts": {
     "format": "vendor/bin/pint",
     "format:check": "vendor/bin/pint --test",
-    "test": "vendor/bin/pest --ci",
+    "test": "vendor/bin/pest --configuration phpunit.xml.dist --ci",
     "release:check": "@php bin/release.php",
     "release": "npm run release --",
     "release:first": "npm run release -- --first-release"
