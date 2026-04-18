@@ -1,6 +1,5 @@
 {
   "name": "jdclzn/payroll-engine",
-  "version": "1.0.0",
   "description": "Reusable Laravel payroll engine for scalable, auditable, and customizable payroll computation.",
   "keywords": [
     "payroll",
@@ -40,7 +39,10 @@
     }
   },
   "scripts": {
-    "test": "@php vendor/bin/pest"
+    "test": "@php vendor/bin/pest",
+    "release:check": "@php bin/release.php",
+    "release": "npm run release --",
+    "release:first": "npm run release -- --first-release"
   },
   "config": {
     "sort-packages": true,

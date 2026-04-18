@@ -41,8 +41,8 @@ use Illuminate\Support\Facades\Facade;
  */
 class PayrollEngineFacade extends Facade
 {
-    protected static function getFacadeAccessor(): PayrollEngine
+    protected static function getFacadeAccessor(): string
     {
-        return new PayrollEngine();
+        return PayrollEngine::class;
     }
 }

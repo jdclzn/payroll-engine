@@ -1,4 +1,5 @@
 /vendor/
+/node_modules/
 /.idea/
 /.idea/laravel-idea-personal.xml
 /.idea/laravel-idea.xml
@@ -12,5 +13,4 @@
 .DS_Store
 .styleci.yml
 test.json
-
 

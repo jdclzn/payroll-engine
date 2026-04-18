@@ -2,10 +2,17 @@
 
 namespace Jdclzn\PayrollEngine;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 
-class PayrollEngineServiceProvider extends ServiceProvider
+class PayrollEngineServiceProvider extends ServiceProvider implements DeferrableProvider
 {
+    public const CONFIG_KEY = 'payroll-engine';
+
+    public const CONFIG_TAG = 'payroll-engine-config';
+
+    public const SERVICE_KEY = 'payroll-engine';
+
     /**
      * Bootstrap the application services.
      */
@@ -21,7 +28,11 @@ class PayrollEngineServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => $this->app->configPath('payroll-engine.php'),
+                __DIR__.'/../config/config.php' => $this->app->configPath(self::CONFIG_KEY.'.php'),
+            ], self::CONFIG_TAG);
+
+            $this->publishes([
+                __DIR__.'/../config/config.php' => $this->app->configPath(self::CONFIG_KEY.'.php'),
             ], 'config');
 
             // Publishing the views.
@@ -49,15 +60,29 @@ class PayrollEngineServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'payroll-engine');
+        // Recursively merge package defaults so host apps can override only the
+        // specific nested keys they need without losing the rest of the config tree.
+        $this->replaceConfigRecursivelyFrom(__DIR__.'/../config/config.php', self::CONFIG_KEY);
 
-        // Register the main class to use with the facade
-        $this->app->singleton('payroll-engine', function () {
+        // Register the main class and facade service alias through Laravel's container.
+        $this->app->singleton(PayrollEngine::class, function () {
             return new PayrollEngine(
-                (array) $this->app['config']->get('payroll-engine', []),
+                (array) $this->app['config']->get(self::CONFIG_KEY, []),
                 fn (string $class): object => $this->app->make($class),
             );
         });
+
+        $this->app->alias(PayrollEngine::class, self::SERVICE_KEY);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function provides(): array
+    {
+        return [
+            PayrollEngine::class,
+            self::SERVICE_KEY,
+        ];
     }
 }
