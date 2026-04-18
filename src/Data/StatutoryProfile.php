@@ -1,0 +1,27 @@
+<?php
+
+namespace Jdclzn\PayrollEngine\Data;
+
+use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
+use Money\Money;
+
+final readonly class StatutoryProfile
+{
+    /**
+     * @param  array<string, mixed>  $metadata
+     */
+    public function __construct(
+        public ?string $tin,
+        public ?string $sssNumber,
+        public ?string $hdmfNumber,
+        public ?string $phicNumber,
+        public bool $minimumWageEarner,
+        public ?Money $manualSssContribution = null,
+        public ?Money $manualPhilHealthContribution = null,
+        public ?Money $manualPagIbigContribution = null,
+        public ?Money $upgradedPagIbigContribution = null,
+        public ?PagIbigContributionSchedule $pagIbigContributionSchedule = null,
+        public array $metadata = [],
+    ) {
+    }
+}
