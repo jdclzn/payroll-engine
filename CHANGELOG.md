@@ -32,13 +32,3 @@ All notable changes to this project will be documented in this file. See [standa
 * Introduce `PayrollEngine` core implementation with facade and service provider ([bca6dab](https://github.com-personal/jdclzn/payroll-engine/commit/bca6dabecec515aec00058acd9c01faf84a798bb))
 * Introduce client policy presets and registry for flexible client-specific configurations ([be66790](https://github.com-personal/jdclzn/payroll-engine/commit/be667903ebcd6eb543851630f8090b06048ac2fe))
 * Introduce core contract interfaces for payroll engine ([2c5aa42](https://github.com-personal/jdclzn/payroll-engine/commit/2c5aa424b20df8b721a14641e137dc6423e04455))
-
-# Changelog
-
-All notable changes to `payroll-engine` will be documented in this file
-
-## Unreleased
-
-- publish-ready Laravel package integration for the service provider and facade
-- strategy-based payroll computation with traceable audit metadata and extension points
-- comprehensive payroll scenario coverage for base, off-cycle, final-pay, retro, tenant, and policy-driven flows
