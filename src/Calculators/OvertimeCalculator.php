@@ -9,6 +9,7 @@ use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\RateSnapshot;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Jdclzn\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 /**
@@ -80,7 +81,15 @@ final class OvertimeCalculator implements OvertimeCalculatorContract
                     label: 'Manual Overtime Pay',
                     amount: $input->manualOvertimePay,
                     taxable: true,
-                    metadata: ['mode' => 'manual'],
+                    metadata: TraceMetadata::line(
+                        source: 'payroll_input.manual_overtime_pay',
+                        appliedRule: 'manual_overtime_pay',
+                        formula: 'input manual overtime amount',
+                        basis: [
+                            'manual_overtime_pay' => $input->manualOvertimePay,
+                        ],
+                        extra: ['mode' => 'manual'],
+                    ),
                 ),
             ];
         }
@@ -99,10 +108,23 @@ final class OvertimeCalculator implements OvertimeCalculatorContract
                 label: $this->labelFor($entry),
                 amount: $amount,
                 taxable: $entry->taxable,
-                metadata: [
-                    'hours' => $entry->hours,
-                    'multiplier' => $entry->multiplier ?? $this->defaultMultiplier($company, $entry->type),
-                ],
+                metadata: TraceMetadata::line(
+                    source: 'overtime_calculator',
+                    appliedRule: strtolower($entry->type),
+                    formula: $entry->type === 'night_differential'
+                        ? 'hourly_rate * hours * night_differential_multiplier'
+                        : 'hourly_rate * hours * overtime_multiplier',
+                    basis: [
+                        'hourly_rate' => $rates->hourlyRate,
+                        'hours' => $entry->hours,
+                        'multiplier' => $entry->multiplier ?? $this->defaultMultiplier($company, $entry->type),
+                    ],
+                    extra: [
+                        'hours' => $entry->hours,
+                        'multiplier' => $entry->multiplier ?? $this->defaultMultiplier($company, $entry->type),
+                        'night_differential' => $entry->nightDifferential,
+                    ],
+                ),
             );
         }
 

@@ -15,6 +15,7 @@ use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Jdclzn\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final readonly class PayrollCalculator implements PayrollWorkflow
@@ -38,7 +39,23 @@ final readonly class PayrollCalculator implements PayrollWorkflow
         $separatePayouts = [];
 
         if (! $rates->scheduledBasicPay->isZero()) {
-            $earnings[] = new PayrollLine('earning', 'Basic Pay', $rates->scheduledBasicPay, true);
+            $earnings[] = new PayrollLine(
+                'earning',
+                'Basic Pay',
+                $rates->scheduledBasicPay,
+                true,
+                TraceMetadata::line(
+                    source: 'rate_calculator',
+                    appliedRule: 'scheduled_basic_pay',
+                    formula: $runType->isFinalSettlement()
+                        ? 'regular_scheduled_basic_pay * payable_days / covered_days'
+                        : 'monthly_basic_salary * 12 / periods_per_year',
+                    basis: [
+                        'monthly_basic_salary' => $rates->monthlyBasicSalary,
+                        'periods_per_year' => $company->periodsPerYear(),
+                    ],
+                ),
+            );
         }
 
         if ($runType->usesRegularAllowances()) {
@@ -52,6 +69,17 @@ final readonly class PayrollCalculator implements PayrollWorkflow
                 label: $adjustment->label,
                 amount: $adjustment->amount,
                 taxable: $adjustment->taxable,
+                metadata: TraceMetadata::line(
+                    source: 'payroll_input.adjustments',
+                    appliedRule: 'manual_adjustment',
+                    formula: 'input amount',
+                    basis: [
+                        'amount' => $adjustment->amount,
+                    ],
+                    extra: [
+                        'separate_payout' => $adjustment->separatePayout,
+                    ],
+                ),
             );
 
             if ($line->type === 'separate_payout') {
@@ -76,6 +104,15 @@ final readonly class PayrollCalculator implements PayrollWorkflow
                 label: 'Bonus',
                 amount: $input->bonus,
                 taxable: true,
+                metadata: TraceMetadata::line(
+                    source: 'payroll_input.bonus',
+                    appliedRule: 'bonus_amount',
+                    formula: 'input amount',
+                    basis: [
+                        'bonus_amount' => $input->bonus,
+                        'used_annual_bonus_shield' => $input->usedAnnualBonusShield,
+                    ],
+                ),
             );
         }
 
@@ -93,7 +130,23 @@ final readonly class PayrollCalculator implements PayrollWorkflow
         }
 
         $deductions = array_map(
-            static fn ($deduction) => new PayrollLine('deduction', $deduction->label, $deduction->amount),
+            static fn ($deduction) => new PayrollLine(
+                'deduction',
+                $deduction->label,
+                $deduction->amount,
+                false,
+                TraceMetadata::line(
+                    source: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction ? 'payroll_input.loan_deductions' : 'payroll_input.manual_deductions',
+                    appliedRule: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction ? 'loan_deduction' : 'manual_deduction',
+                    formula: 'input amount',
+                    basis: [
+                        'amount' => $deduction->amount,
+                    ],
+                    extra: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction
+                        ? ['loan_reference' => $deduction->loanReference]
+                        : [],
+                ),
+            ),
             [
                 ...$input->loanDeductions,
                 ...$input->manualDeductions,
@@ -113,7 +166,20 @@ final readonly class PayrollCalculator implements PayrollWorkflow
             ['Undertime Deduction', $input->undertimeDeduction],
         ] as [$label, $amount]) {
             if (! $amount->isZero()) {
-                $deductions[] = new PayrollLine('deduction', $label, $amount);
+                $deductions[] = new PayrollLine(
+                    'deduction',
+                    $label,
+                    $amount,
+                    false,
+                    TraceMetadata::line(
+                        source: 'payroll_input.attendance_adjustments',
+                        appliedRule: strtolower(str_replace(' ', '_', $label)),
+                        formula: 'input amount',
+                        basis: [
+                            'amount' => $amount,
+                        ],
+                    ),
+                );
             }
         }
 
@@ -184,6 +250,15 @@ final readonly class PayrollCalculator implements PayrollWorkflow
             label: $label,
             amount: $amount,
             taxable: false,
+            metadata: TraceMetadata::line(
+                source: 'employee_compensation.allowances',
+                appliedRule: strtolower(str_replace(' ', '_', $label)),
+                formula: 'configured allowance amount',
+                basis: [
+                    'amount' => $amount,
+                    'separate_allowance_payout' => $company->separateAllowancePayout,
+                ],
+            ),
         );
 
         if ($line->type === 'separate_payout') {

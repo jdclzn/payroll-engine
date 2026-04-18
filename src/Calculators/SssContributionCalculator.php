@@ -4,6 +4,7 @@ namespace Jdclzn\PayrollEngine\Calculators;
 
 use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Jdclzn\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final class SssContributionCalculator
@@ -24,8 +25,43 @@ final class SssContributionCalculator
         }
 
         return [
-            'employee' => new PayrollLine('employee_contribution', 'SSS Contribution', $employee),
-            'employer' => new PayrollLine('employer_contribution', 'Employer SSS Contribution', $employer),
+            'employee' => new PayrollLine(
+                'employee_contribution',
+                'SSS Contribution',
+                $employee,
+                false,
+                TraceMetadata::line(
+                    source: 'sss_calculator',
+                    appliedRule: 'sss_employee_share',
+                    formula: $manualEmployeeContribution !== null
+                        ? 'manual employee contribution'
+                        : 'salary_base * 5%',
+                    basis: [
+                        'monthly_salary' => $monthlySalary,
+                        'salary_base' => $base,
+                        'period_divisor' => $periodDivisor,
+                    ],
+                    extra: [
+                        'manual_override' => $manualEmployeeContribution !== null,
+                    ],
+                ),
+            ),
+            'employer' => new PayrollLine(
+                'employer_contribution',
+                'Employer SSS Contribution',
+                $employer,
+                false,
+                TraceMetadata::line(
+                    source: 'sss_calculator',
+                    appliedRule: 'sss_employer_share',
+                    formula: 'salary_base * 10% + ec contribution',
+                    basis: [
+                        'monthly_salary' => $monthlySalary,
+                        'salary_base' => $base,
+                        'period_divisor' => $periodDivisor,
+                    ],
+                ),
+            ),
         ];
     }
 }

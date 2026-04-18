@@ -9,6 +9,7 @@ use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Enums\TaxStrategy;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Jdclzn\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
@@ -24,7 +25,20 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
             || ! $input->period->normalizedRunType()->usesRegularWithholding()
             || $taxableIncomeAfterMandatory->isNegative()
         ) {
-            return new PayrollLine('deduction', 'Withholding Tax', MoneyHelper::zero());
+            return new PayrollLine(
+                'deduction',
+                'Withholding Tax',
+                MoneyHelper::zero(),
+                false,
+                TraceMetadata::line(
+                    source: 'withholding_tax_calculator',
+                    appliedRule: 'withholding_tax',
+                    formula: 'not applicable for this payroll run',
+                    basis: [
+                        'taxable_income_after_mandatory' => $taxableIncomeAfterMandatory,
+                    ],
+                ),
+            );
         }
 
         $annualizedIncome = match ($company->taxStrategy) {
@@ -40,6 +54,21 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
             type: 'deduction',
             label: 'Withholding Tax',
             amount: MoneyHelper::divide($annualTax, $company->periodsPerYear()),
+            taxable: false,
+            metadata: TraceMetadata::line(
+                source: 'withholding_tax_calculator',
+                appliedRule: 'withholding_tax',
+                formula: 'annual_tax(annualized_income) / periods_per_year',
+                basis: [
+                    'taxable_income_after_mandatory' => $taxableIncomeAfterMandatory,
+                    'annualized_income' => $annualizedIncome,
+                    'annual_tax' => $annualTax,
+                    'periods_per_year' => $company->periodsPerYear(),
+                ],
+                extra: [
+                    'tax_strategy' => $company->taxStrategy->value,
+                ],
+            ),
         );
     }
 
@@ -50,7 +79,20 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
         Money $projectedAnnualTaxableIncome,
     ): PayrollLine {
         if ($input->bonus->isZero()) {
-            return new PayrollLine('deduction', 'Bonus Tax Withheld', MoneyHelper::zero());
+            return new PayrollLine(
+                'deduction',
+                'Bonus Tax Withheld',
+                MoneyHelper::zero(),
+                false,
+                TraceMetadata::line(
+                    source: 'withholding_tax_calculator',
+                    appliedRule: 'bonus_tax_withheld',
+                    formula: 'no taxable bonus',
+                    basis: [
+                        'bonus_amount' => $input->bonus,
+                    ],
+                ),
+            );
         }
 
         $configuredShield = $employee->bonusTaxShieldAmount->isZero()
@@ -66,7 +108,22 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
         );
 
         if ($employee->statutory->minimumWageEarner || $taxableBonus->isZero()) {
-            return new PayrollLine('deduction', 'Bonus Tax Withheld', MoneyHelper::zero());
+            return new PayrollLine(
+                'deduction',
+                'Bonus Tax Withheld',
+                MoneyHelper::zero(),
+                false,
+                TraceMetadata::line(
+                    source: 'withholding_tax_calculator',
+                    appliedRule: 'bonus_tax_withheld',
+                    formula: 'no taxable bonus after shield',
+                    basis: [
+                        'bonus_amount' => $input->bonus,
+                        'remaining_shield' => $remainingShield,
+                        'taxable_bonus' => $taxableBonus,
+                    ],
+                ),
+            );
         }
 
         $taxBefore = $this->annualTax($projectedAnnualTaxableIncome);
@@ -76,6 +133,19 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
             type: 'deduction',
             label: 'Bonus Tax Withheld',
             amount: MoneyHelper::max($taxAfter->subtract($taxBefore), MoneyHelper::zero()),
+            taxable: false,
+            metadata: TraceMetadata::line(
+                source: 'withholding_tax_calculator',
+                appliedRule: 'bonus_tax_withheld',
+                formula: 'annual_tax(projected_income + taxable_bonus) - annual_tax(projected_income)',
+                basis: [
+                    'projected_annual_taxable_income' => $projectedAnnualTaxableIncome,
+                    'remaining_shield' => $remainingShield,
+                    'taxable_bonus' => $taxableBonus,
+                    'tax_before' => $taxBefore,
+                    'tax_after' => $taxAfter,
+                ],
+            ),
         );
     }
 

@@ -12,6 +12,7 @@ use Jdclzn\PayrollEngine\Enums\PagIbigContributionMode;
 use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
 use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Jdclzn\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 /**
@@ -51,22 +52,22 @@ final class PagIbigContributionCalculator implements PagIbigContributionCalculat
     /**
      * Calculates employee and employer Pag-IBIG results for the current run.
      *
- * Input behavior:
- * - `company->pagIbigContributionMode` controls which packaged mode is used
- * - `employee->statutory->pagIbigContributionSchedule` can override the
- *   company default so different employees in the same company can use monthly
- *   or split Pag-IBIG deduction handling
- * - `employee->statutory->manualPagIbigContribution` overrides the computed
- *   mandatory employee share
- * - `employee->statutory->upgradedPagIbigContribution` supplies an employee
- *   savings amount for upgraded voluntary mode
- * - `input->pagIbigDueThisRun` explicitly marks whether a monthly schedule
- *   should deduct on the current run when the payroll flow cannot be safely
- *   inferred from the dates alone
- * - `input->pagIbigLoanAmortization` is emitted as a separate deduction line
- *   only when the loan-amortization-separated mode is enabled
- * - `periodDivisor` remains the general statutory divisor and is only used
- *   when the effective Pag-IBIG deduction schedule is split
+     * Input behavior:
+     * - `company->pagIbigContributionMode` controls which packaged mode is used
+     * - `employee->statutory->pagIbigContributionSchedule` can override the
+     *   company default so different employees in the same company can use monthly
+     *   or split Pag-IBIG deduction handling
+     * - `employee->statutory->manualPagIbigContribution` overrides the computed
+     *   mandatory employee share
+     * - `employee->statutory->upgradedPagIbigContribution` supplies an employee
+     *   savings amount for upgraded voluntary mode
+     * - `input->pagIbigDueThisRun` explicitly marks whether a monthly schedule
+     *   should deduct on the current run when the payroll flow cannot be safely
+     *   inferred from the dates alone
+     * - `input->pagIbigLoanAmortization` is emitted as a separate deduction line
+     *   only when the loan-amortization-separated mode is enabled
+     * - `periodDivisor` remains the general statutory divisor and is only used
+     *   when the effective Pag-IBIG deduction schedule is split
      *
      * Returned values:
      * - `employee`: payroll line for the employee Pag-IBIG deduction
@@ -107,8 +108,45 @@ final class PagIbigContributionCalculator implements PagIbigContributionCalculat
         }
 
         return new PagIbigContributionResult(
-            employee: new PayrollLine('employee_contribution', 'Pag-IBIG Contribution', $employeeContribution),
-            employer: new PayrollLine('employer_contribution', 'Employer Pag-IBIG Contribution', $employerContribution),
+            employee: new PayrollLine(
+                'employee_contribution',
+                'Pag-IBIG Contribution',
+                $employeeContribution,
+                false,
+                TraceMetadata::line(
+                    source: 'pagibig_calculator',
+                    appliedRule: 'pagibig_employee_share',
+                    formula: $employee->statutory->manualPagIbigContribution !== null
+                        ? 'manual employee contribution'
+                        : ($effectiveMode === PagIbigContributionMode::UpgradedVoluntary
+                            || $effectiveMode === PagIbigContributionMode::LoanAmortizationSeparated
+                            ? 'upgraded or mandatory employee contribution, then scheduled by cutoff'
+                            : 'mandatory employee contribution, then scheduled by cutoff'),
+                    basis: [
+                        'monthly_salary' => $employee->compensation->monthlyBasicSalary,
+                        'mode' => $effectiveMode->value,
+                        'schedule' => $schedule->value,
+                        'period_divisor' => $periodDivisor,
+                    ],
+                ),
+            ),
+            employer: new PayrollLine(
+                'employer_contribution',
+                'Employer Pag-IBIG Contribution',
+                $employerContribution,
+                false,
+                TraceMetadata::line(
+                    source: 'pagibig_calculator',
+                    appliedRule: 'pagibig_employer_share',
+                    formula: 'mandatory employer contribution, then scheduled by cutoff',
+                    basis: [
+                        'monthly_salary' => $employee->compensation->monthlyBasicSalary,
+                        'mode' => $effectiveMode->value,
+                        'schedule' => $schedule->value,
+                        'period_divisor' => $periodDivisor,
+                    ],
+                ),
+            ),
             separateDeductions: $this->separateDeductions($company, $input),
         );
     }
@@ -173,8 +211,7 @@ final class PagIbigContributionCalculator implements PagIbigContributionCalculat
 
         return match ($company->schedule->frequency) {
             PayrollFrequency::Monthly => true,
-            PayrollFrequency::SemiMonthly => $input->period->startDate->day > 15
-                || $input->period->endDate->isSameDay($input->period->endDate->endOfMonth()),
+            PayrollFrequency::SemiMonthly => $input->period->startDate->day > 15 || $input->period->endDate->isSameDay($input->period->endDate->endOfMonth()),
             PayrollFrequency::Weekly => $input->period->releaseDate->addWeek()->month !== $input->period->releaseDate->month,
         };
     }
@@ -211,6 +248,15 @@ final class PagIbigContributionCalculator implements PagIbigContributionCalculat
                 type: 'deduction',
                 label: 'Pag-IBIG Loan Amortization',
                 amount: $input->pagIbigLoanAmortization,
+                taxable: false,
+                metadata: TraceMetadata::line(
+                    source: 'payroll_input.pagibig_loan_amortization',
+                    appliedRule: 'pagibig_loan_amortization',
+                    formula: 'input amount',
+                    basis: [
+                        'amount' => $input->pagIbigLoanAmortization,
+                    ],
+                ),
             ),
         ];
     }
