@@ -45,7 +45,7 @@ jobs:
         run: composer validate --no-check-publish
 
       - name: Check code formatting
-        run: composer run format:check
+        run: vendor/bin/pint --test
 
   test:
     name: Tests PHP ${{ matrix.php }}
@@ -81,4 +81,4 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run test suite
-        run: composer test
+        run: vendor/bin/pest --ci
