@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com-personal/jdclzn/payroll-engine/compare/v1.1.0...v1.2.0) (2026-04-18)
+
+
+### Features
+
+* Add Laravel integration tests, release automation scripts, and config management improvements ([a0370d3](https://github.com-personal/jdclzn/payroll-engine/commit/a0370d3c112d6a5821b1c1f52aaf092d81f27398))
+
 ## 1.1.0 (2026-04-18)
 
 
