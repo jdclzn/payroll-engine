@@ -14,3 +14,4 @@
 .styleci.yml
 test.json
 
+/.temp/phpunit-cache/test-results
