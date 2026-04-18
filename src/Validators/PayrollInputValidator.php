@@ -1,0 +1,48 @@
+<?php
+
+namespace Jdclzn\PayrollEngine\Validators;
+
+use Jdclzn\PayrollEngine\Data\PayrollInput;
+use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
+
+final class PayrollInputValidator
+{
+    public function validate(PayrollInput $input): void
+    {
+        if ($input->period->startDate->greaterThan($input->period->endDate)) {
+            throw new InvalidPayrollData('Payroll period start date cannot be later than the end date.');
+        }
+
+        foreach ($input->overtimeEntries as $entry) {
+            if ($entry->hours < 0) {
+                throw new InvalidPayrollData('Overtime hours cannot be negative.');
+            }
+
+            if ($entry->manualAmount !== null && $entry->manualAmount->isNegative()) {
+                throw new InvalidPayrollData('Manual overtime amount cannot be negative.');
+            }
+        }
+
+        foreach ([
+            $input->manualOvertimePay,
+            $input->leaveDeduction,
+            $input->absenceDeduction,
+            $input->lateDeduction,
+            $input->undertimeDeduction,
+            $input->bonus,
+            $input->usedAnnualBonusShield,
+        ] as $money) {
+            if ($money !== null && $money->isNegative()) {
+                throw new InvalidPayrollData('Payroll input monetary values cannot be negative.');
+            }
+        }
+
+        foreach ([$input->adjustments, $input->manualDeductions, $input->loanDeductions] as $entries) {
+            foreach ($entries as $entry) {
+                if ($entry->amount->isNegative()) {
+                    throw new InvalidPayrollData('Payroll input adjustments and deductions cannot be negative.');
+                }
+            }
+        }
+    }
+}
