@@ -188,6 +188,7 @@ This package uses [standard-version](https://github.com/conventional-changelog/s
   `composer run release:check`
 
 `composer run release` delegates to the local npm `standard-version` install, runs the PHP package checks first, updates `CHANGELOG.md`, bumps the release-tooling version in `package.json`, creates a release commit, and creates the matching git tag.
+It also bumps the mirrored `version` field in `composer.json` and refreshes `composer.lock`, so the npm and Composer package metadata stay aligned after each release.
 
 ## Changelog
 

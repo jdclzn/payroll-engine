@@ -1,4 +1,15 @@
 {
   "tagPrefix": "v",
-  "releaseCommitMessageFormat": "chore(release): {{currentTag}}"
+  "releaseCommitMessageFormat": "chore(release): {{currentTag}}",
+  "scripts": {
+    "postbump": "composer update --lock --no-install"
+  },
+  "bumpFiles": [
+    "package.json",
+    "package-lock.json",
+    {
+      "filename": "composer.json",
+      "type": "json"
+    }
+  ]
 }
