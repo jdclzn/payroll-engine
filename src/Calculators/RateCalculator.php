@@ -1,0 +1,96 @@
+<?php
+
+namespace Jdclzn\PayrollEngine\Calculators;
+
+use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use Jdclzn\PayrollEngine\Data\CompanyProfile;
+use Jdclzn\PayrollEngine\Data\EmployeeProfile;
+use Jdclzn\PayrollEngine\Data\PayrollPeriod;
+use Jdclzn\PayrollEngine\Data\RateSnapshot;
+use Jdclzn\PayrollEngine\Support\MoneyHelper;
+
+/**
+ * Default rate-calculation strategy used by the payroll engine.
+ *
+ * Responsibility:
+ * - derive the scheduled basic pay for the current payroll period
+ * - derive the employee daily rate
+ * - derive the employee hourly rate
+ * - return a normalized {@see RateSnapshot} for downstream payroll steps
+ *
+ * Default formula behavior:
+ * - `scheduledBasicPay`:
+ *   `monthlyBasicSalary * 12 / periodsPerYear`
+ * - `dailyRate`:
+ *   `monthlyBasicSalary * 12 / eemrFactor`
+ * - `hourlyRate`:
+ *   `dailyRate / hoursPerDay`
+ *
+ * Special-run behavior:
+ * - for special runs such as bonus-only payroll, scheduled basic pay is set to
+ *   zero so the engine does not inject regular basic salary into the result
+ *
+ * Use case:
+ * - use this class for the package default Philippine payroll flow where the
+ *   company follows EEMR-based daily-rate computation and standard hourly-rate
+ *   derivation from the company work schedule
+ * - replace this strategy when a client uses different business logic such as:
+ *   grade-step tables, location-based rates, CBA rules, project-based rates,
+ *   or a daily/hourly rate that does not come from the PH annualized divisor
+ *
+ * Custom strategy example:
+ * - implement {@see RateCalculatorContract}
+ * - register the class under `payroll-engine.strategies.clients.<client_code>.rate`
+ * - the core engine will keep using the same payroll workflow while swapping
+ *   only the rate computation for that client
+ */
+final class RateCalculator implements RateCalculatorContract
+{
+    /**
+     * Builds the rate snapshot used by the payroll workflow.
+     *
+     * Inputs considered:
+     * - company payroll schedule and periods-per-year
+     * - company EEMR factor
+     * - company hours-per-day setting
+     * - employee monthly basic salary
+     * - employee fixed daily/hourly overrides when present
+     *
+     * Resolution order:
+     * - monthly basic salary always comes from the employee compensation profile
+     * - scheduled basic pay becomes zero for special runs, otherwise it is
+     *   prorated from the monthly salary using the company payroll frequency
+     * - daily rate uses the employee fixed daily rate only when the company
+     *   enables `fixedPerDayRate`; otherwise it always uses the computed
+     *   annualized divisor formula
+     * - hourly rate falls back to `dailyRate / hoursPerDay` when no employee
+     *   fixed hourly rate is supplied
+     *
+     * Returned values are normalized as Money objects inside {@see RateSnapshot}
+     * so the rest of the payroll pipeline can continue without float drift.
+     */
+    public function calculate(CompanyProfile $company, EmployeeProfile $employee, PayrollPeriod $period): RateSnapshot
+    {
+        $monthlyBasic = $employee->compensation->monthlyBasicSalary;
+        $scheduledBasicPay = $period->isSpecialRun()
+            ? MoneyHelper::zero()
+            : MoneyHelper::multiply($monthlyBasic, 12 / $company->periodsPerYear());
+
+        $computedDailyRate = MoneyHelper::divide(MoneyHelper::multiply($monthlyBasic, 12), max($company->eemrFactor, 1));
+        $fixedPerDayApplied = $company->fixedPerDayRate && $employee->compensation->fixedDailyRate !== null;
+        $dailyRate = $fixedPerDayApplied
+            ? $employee->compensation->fixedDailyRate
+            : $computedDailyRate;
+
+        $hourlyRate = $employee->compensation->fixedHourlyRate
+            ?? MoneyHelper::divide($dailyRate, max($company->schedule->hoursPerDay, 1));
+
+        return new RateSnapshot(
+            monthlyBasicSalary: $monthlyBasic,
+            scheduledBasicPay: $scheduledBasicPay,
+            dailyRate: $dailyRate,
+            hourlyRate: $hourlyRate,
+            fixedPerDayApplied: $fixedPerDayApplied,
+        );
+    }
+}
