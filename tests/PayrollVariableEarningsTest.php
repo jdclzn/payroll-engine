@@ -152,7 +152,8 @@ it('computes commission and performance earnings through the default variable ea
     expect($variableLines)->toHaveCount(3)
         ->and($variableLabels)->toBe(['Sales Commission', 'Production Incentive', 'Quota Bonus'])
         ->and($variableTypes)->toBe(['sales_commission', 'production_incentive', 'quota_bonus'])
-        ->and($variableLines[0]->metadata['basis'])->toBe('monthly-sales')
+        ->and($variableLines[0]->metadata['declared_basis'])->toBe('monthly-sales')
+        ->and($variableLines[0]->metadata['basis']['amount'])->toBe(2500.00)
         ->and(MoneyHelper::toFloat($variableTotal))->toBe(4500.00)
         ->and(MoneyHelper::toFloat($result->grossPay))->toBe(19500.00)
         ->and(MoneyHelper::toFloat($result->taxableIncome))->toBe(MoneyHelper::toFloat($result->grossPay->subtract($employeeShare)));

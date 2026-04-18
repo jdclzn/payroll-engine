@@ -57,6 +57,7 @@ final class PayslipBuilder
             'deductions' => $this->serializeLines($result->deductions),
             'separate_payouts' => $this->serializeLines($result->separatePayouts),
             'issues' => $this->serializeIssues($result->issues),
+            'audit' => $result->audit,
             'totals' => [
                 'gross_pay' => MoneyHelper::toFloat($result->grossPay),
                 'taxable_income' => MoneyHelper::toFloat($result->taxableIncome),

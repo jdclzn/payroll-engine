@@ -42,4 +42,15 @@ final readonly class PayrollEdgeCasePolicyPipeline
 
         return $result;
     }
+
+    /**
+     * @return array<int, string>
+     */
+    public function policyNames(): array
+    {
+        return array_map(
+            static fn (PayrollEdgeCasePolicy $policy) => $policy::class,
+            $this->policies,
+        );
+    }
 }

@@ -213,4 +213,30 @@ return [
             */
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Edge Case Policies
+    |--------------------------------------------------------------------------
+    |
+    | Optional policy objects that prepare payroll input and/or finalize payroll
+    | results for edge scenarios such as:
+    | - missing attendance data
+    | - overlapping deductions
+    | - conflicting rule sets
+    | - insufficient net pay
+    | - partial payout handling
+    |
+    | When omitted, the package uses its default policy pipeline.
+    | You may replace the whole pipeline by supplying class strings or policy
+    | instances that implement \Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy.
+    |
+    */
+    'edge_case_policies' => [
+        /*
+        \App\Payroll\Policies\CustomAttendancePolicy::class,
+        \App\Payroll\Policies\CustomDeductionPriorityPolicy::class,
+        \App\Payroll\Policies\CustomNetPayPolicy::class,
+        */
+    ],
 ];

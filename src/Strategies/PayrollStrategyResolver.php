@@ -94,6 +94,28 @@ final class PayrollStrategyResolver
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function describeFor(string $clientCode): array
+    {
+        $workflow = $this->workflowFor($clientCode);
+        $rate = $this->rateCalculatorFor($clientCode);
+        $overtime = $this->overtimeCalculatorFor($clientCode);
+        $variableEarnings = $this->variableEarningCalculatorFor($clientCode);
+        $withholding = $this->withholdingTaxCalculatorFor($clientCode);
+        $pagIbig = $this->pagIbigContributionCalculatorFor($clientCode);
+
+        return [
+            'workflow' => $workflow::class,
+            'rate' => $rate::class,
+            'overtime' => $overtime::class,
+            'variable_earnings' => $variableEarnings::class,
+            'withholding' => $withholding::class,
+            'pagibig' => $pagIbig::class,
+        ];
+    }
+
     private function rateCalculatorFor(string $clientCode): RateCalculatorContract
     {
         $clientCode = $this->normalizeClientCode($clientCode);

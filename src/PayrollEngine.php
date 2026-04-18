@@ -2,6 +2,7 @@
 
 namespace Jdclzn\PayrollEngine;
 
+use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Data\PayrollRun;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
@@ -21,6 +22,8 @@ use Jdclzn\PayrollEngine\Reports\PayslipBuilder;
 use Jdclzn\PayrollEngine\Strategies\PayrollStrategyResolver;
 use Jdclzn\PayrollEngine\Support\AttributeReader;
 use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
+use Jdclzn\PayrollEngine\Support\PayrollAuditTrailBuilder;
+use Jdclzn\PayrollEngine\Support\PayrollResultTraceEnricher;
 use Jdclzn\PayrollEngine\Support\RetroAdjustmentInputBuilder;
 use Jdclzn\PayrollEngine\Validators\CompanyProfileValidator;
 use Jdclzn\PayrollEngine\Validators\EmployeeProfileValidator;
@@ -44,6 +47,10 @@ class PayrollEngine
 
     private RetroAdjustmentInputBuilder $retroAdjustmentInputBuilder;
 
+    private PayrollResultTraceEnricher $resultTraceEnricher;
+
+    private PayrollAuditTrailBuilder $auditTrailBuilder;
+
     private PayrollEdgeCasePolicyPipeline $edgeCasePolicyPipeline;
 
     private PayrollStrategyResolver $strategyResolver;
@@ -63,17 +70,17 @@ class PayrollEngine
         $reader = new AttributeReader();
         $registry = new ClientPolicyRegistry();
         $edgeCaseConfig = new EdgeCasePolicyConfig();
+        $factoryResolver = $factory === null ? null : $factory(...);
         $this->companyNormalizer = new CompanyProfileNormalizer($reader, $registry, $config);
         $this->employeeNormalizer = new EmployeeProfileNormalizer($reader);
         $this->periodNormalizer = new PayrollPeriodNormalizer($reader);
         $this->inputNormalizer = new PayrollInputNormalizer($reader, $this->periodNormalizer);
         $this->strategyResolver = new PayrollStrategyResolver($config, $factory);
-        $this->edgeCasePolicyPipeline = new PayrollEdgeCasePolicyPipeline([
-            new RuleConflictPolicy($edgeCaseConfig),
-            new AttendanceDataPolicy($edgeCaseConfig),
-            new DeductionOverlapPolicy($edgeCaseConfig),
-            new NetPayResolutionPolicy($edgeCaseConfig),
-        ]);
+        $this->edgeCasePolicyPipeline = new PayrollEdgeCasePolicyPipeline(
+            $this->edgeCasePolicies($config, $edgeCaseConfig, $factoryResolver)
+        );
+        $this->resultTraceEnricher = new PayrollResultTraceEnricher();
+        $this->auditTrailBuilder = new PayrollAuditTrailBuilder();
         $this->payslipBuilder = new PayslipBuilder();
         $this->registerBuilder = new PayrollRegisterBuilder();
         $this->allocationSummaryBuilder = new PayrollAllocationSummaryBuilder();
@@ -97,7 +104,67 @@ class PayrollEngine
             ->workflowFor($companyProfile->clientCode)
             ->calculate($companyProfile, $employeeProfile, $payrollInput);
 
-        return $this->edgeCasePolicyPipeline->finalize($companyProfile, $employeeProfile, $payrollInput, $result);
+        $result = $this->edgeCasePolicyPipeline->finalize($companyProfile, $employeeProfile, $payrollInput, $result);
+        $result = $this->resultTraceEnricher->enrich($result);
+
+        return $result->with([
+            'audit' => $this->auditTrailBuilder->build(
+                $companyProfile,
+                $employeeProfile,
+                $payrollInput,
+                $result,
+                $this->strategyResolver->describeFor($companyProfile->clientCode),
+                $this->edgeCasePolicyPipeline->policyNames(),
+            ),
+        ]);
+    }
+
+    /**
+     * @param  array<string, mixed>  $config
+     * @param  (callable(class-string):object)|null  $factory
+     * @return array<int, PayrollEdgeCasePolicy>
+     */
+    private function edgeCasePolicies(array $config, EdgeCasePolicyConfig $edgeCaseConfig, ?callable $factory): array
+    {
+        $configured = $config['edge_case_policies'] ?? null;
+
+        if (! is_array($configured) || $configured === []) {
+            return [
+                new RuleConflictPolicy($edgeCaseConfig),
+                new AttendanceDataPolicy($edgeCaseConfig),
+                new DeductionOverlapPolicy($edgeCaseConfig),
+                new NetPayResolutionPolicy($edgeCaseConfig),
+            ];
+        }
+
+        $policies = [];
+
+        foreach ($configured as $definition) {
+            if ($definition instanceof PayrollEdgeCasePolicy) {
+                $policies[] = $definition;
+                continue;
+            }
+
+            if (! is_string($definition) || $definition === '') {
+                throw new InvalidPayrollData('Configured edge case policies must be policy instances or class strings.');
+            }
+
+            $instance = $factory !== null
+                ? $factory($definition)
+                : new $definition();
+
+            if (! $instance instanceof PayrollEdgeCasePolicy) {
+                throw new InvalidPayrollData(sprintf(
+                    'Configured edge case policy [%s] must implement %s.',
+                    $definition,
+                    PayrollEdgeCasePolicy::class,
+                ));
+            }
+
+            $policies[] = $instance;
+        }
+
+        return $policies;
     }
 
     /**
