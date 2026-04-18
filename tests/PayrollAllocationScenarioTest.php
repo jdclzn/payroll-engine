@@ -6,7 +6,7 @@ use Jdclzn\PayrollEngine\PayrollEngine;
 
 function allocationEngine(): PayrollEngine
 {
-    return new PayrollEngine();
+    return new PayrollEngine;
 }
 
 /**

@@ -57,11 +57,13 @@ function parseReleaseArguments(array $argv): array
     foreach (array_slice($argv, 1) as $argument) {
         if ($argument === '--no-tests') {
             $skipTests = true;
+
             continue;
         }
 
         if (str_starts_with($argument, '--version=')) {
             $version = normalizeVersion(substr($argument, strlen('--version=')));
+
             continue;
         }
 

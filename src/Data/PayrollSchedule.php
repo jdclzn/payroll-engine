@@ -11,8 +11,7 @@ final readonly class PayrollSchedule
         public int $hoursPerDay,
         public int $workDaysPerYear,
         public int $releaseLeadDays,
-    ) {
-    }
+    ) {}
 
     public function periodsPerYear(): int
     {

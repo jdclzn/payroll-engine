@@ -2,8 +2,8 @@
 
 namespace Jdclzn\PayrollEngine\Reports;
 
-use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollIssue;
+use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
 

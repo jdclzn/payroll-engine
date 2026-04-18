@@ -8,7 +8,7 @@ use Jdclzn\PayrollEngine\Support\MoneyHelper;
 
 function edgePolicyEngine(): PayrollEngine
 {
-    return new PayrollEngine();
+    return new PayrollEngine;
 }
 
 /**

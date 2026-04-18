@@ -15,8 +15,7 @@ final readonly class AllocationProfile
         public ?string $department = null,
         public ?string $vessel = null,
         public array $dimensions = [],
-    ) {
-    }
+    ) {}
 
     public function valueFor(string $dimension): ?string
     {

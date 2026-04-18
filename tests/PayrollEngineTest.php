@@ -3,15 +3,15 @@
 namespace Jdclzn\PayrollEngine\Tests;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Model;
 use Jdclzn\PayrollEngine\Enums\PayrollRunStatus;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
 use Jdclzn\PayrollEngine\PayrollEngine;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Illuminate\Database\Eloquent\Model;
 
 function engine(): PayrollEngine
 {
-    return new PayrollEngine();
+    return new PayrollEngine;
 }
 
 function testPayrollModel(array $attributes = []): Model
@@ -449,14 +449,14 @@ it('runs payroll from laravel models and enforces processed state before files a
         ],
     );
 
-    expect(fn() => engine()->generatePayrollFiles($run))
+    expect(fn () => engine()->generatePayrollFiles($run))
         ->toThrow(InvalidPayrollData::class, 'processed');
 
     $run->prepare('payroll.preparer', CarbonImmutable::parse('2026-04-10'))
         ->approve('chief.approver', CarbonImmutable::parse('2026-04-11'))
         ->process('payroll.preparer', CarbonImmutable::parse('2026-04-12'));
 
-    expect(fn() => engine()->generatePayslips($run, CarbonImmutable::parse('2026-04-14')))
+    expect(fn () => engine()->generatePayslips($run, CarbonImmutable::parse('2026-04-14')))
         ->toThrow(InvalidPayrollData::class, 'on or after');
 
     $register = engine()->generatePayrollFiles($run);
@@ -962,7 +962,7 @@ it('produces consistent final payable totals for gross earnings deductions share
 });
 
 it('rejects incomplete employee setup that violates required capability fields', function () {
-    expect(fn() => engine()->compute(
+    expect(fn () => engine()->compute(
         baseCompany(),
         baseEmployee([
             'email' => null,
@@ -979,7 +979,7 @@ it('rejects incomplete employee setup that violates required capability fields',
 });
 
 it('rejects invalid payroll setup and workflow dates', function () {
-    expect(fn() => engine()->compute(
+    expect(fn () => engine()->compute(
         baseCompany([
             'prepared_by' => ['p1', 'p2', 'p3', 'p4', 'p5', 'p6'],
         ]),

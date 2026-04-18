@@ -15,8 +15,7 @@ final readonly class AttendanceDataPolicy implements PayrollEdgeCasePolicy
 {
     public function __construct(
         private EdgeCasePolicyConfig $config,
-    ) {
-    }
+    ) {}
 
     public function prepare(
         CompanyProfile $company,

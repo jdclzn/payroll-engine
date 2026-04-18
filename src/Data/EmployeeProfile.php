@@ -21,8 +21,7 @@ final readonly class EmployeeProfile
         public AllocationProfile $allocation,
         public Money $bonusTaxShieldAmount,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 
     public function isActiveDuring(PayrollPeriod $period): bool
     {

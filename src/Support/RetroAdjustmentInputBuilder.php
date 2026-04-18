@@ -9,6 +9,7 @@ use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollPeriod;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
+use Money\Money;
 
 final class RetroAdjustmentInputBuilder
 {
@@ -128,7 +129,7 @@ final class RetroAdjustmentInputBuilder
     /**
      * @param  array<int, PayrollLine>  $originalLines
      * @param  array<int, PayrollLine>  $recomputedLines
-     * @return array<int, array{label:string, taxable:bool, amount:\Money\Money}>
+     * @return array<int, array{label:string, taxable:bool, amount:Money}>
      */
     private function differenceMap(array $originalLines, array $recomputedLines): array
     {
@@ -161,7 +162,7 @@ final class RetroAdjustmentInputBuilder
 
     /**
      * @param  array<int, PayrollLine>  $lines
-     * @return array<string, array{label:string, taxable:bool, amount:\Money\Money}>
+     * @return array<string, array{label:string, taxable:bool, amount:Money}>
      */
     private function aggregateLines(array $lines): array
     {

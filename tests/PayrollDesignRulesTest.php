@@ -2,6 +2,7 @@
 
 namespace Jdclzn\PayrollEngine\Tests;
 
+use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
 use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
@@ -150,9 +151,9 @@ it('normalizes raw input before computation and returns traceable audit breakdow
     ];
 
     expect($result->audit['input_normalization'])->toBe([
-        'company' => \Jdclzn\PayrollEngine\Data\CompanyProfile::class,
-        'employee' => \Jdclzn\PayrollEngine\Data\EmployeeProfile::class,
-        'input' => \Jdclzn\PayrollEngine\Data\PayrollInput::class,
+        'company' => CompanyProfile::class,
+        'employee' => EmployeeProfile::class,
+        'input' => PayrollInput::class,
     ])
         ->and($result->audit['applied_rules']['strategies']['workflow'])->toContain('PayrollCalculator')
         ->and($result->audit['rates_used']['monthly_basic_salary'])->toBe(30000.00)
@@ -204,7 +205,7 @@ it('keeps formulas and edge handling replaceable through strategies and policy o
     expect($result->earnings)->toHaveCount(1)
         ->and($result->earnings[0]->label)->toBe('Design Overtime')
         ->and($result->earnings[0]->metadata['source'])->toBe('payroll_calculator')
-        ->and($result->audit['applied_rules']['strategies']['overtime'])->not->toBe(\Jdclzn\PayrollEngine\Calculators\OvertimeCalculator::class)
+        ->and($result->audit['applied_rules']['strategies']['overtime'])->not->toBe(OvertimeCalculator::class)
         ->and($result->audit['applied_rules']['strategies']['overtime'])->toContain('@anonymous')
         ->and($result->audit['applied_rules']['policies'])->toContain($policy::class)
         ->and($result->issues)->toHaveCount(1)

@@ -15,6 +15,5 @@ final readonly class PayrollLine
         public Money $amount,
         public bool $taxable = false,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 }

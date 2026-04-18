@@ -7,7 +7,7 @@ use Jdclzn\PayrollEngine\Support\MoneyHelper;
 
 function retroEngine(): PayrollEngine
 {
-    return new PayrollEngine();
+    return new PayrollEngine;
 }
 
 /**

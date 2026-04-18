@@ -3,10 +3,10 @@
 namespace Jdclzn\PayrollEngine\Policies;
 
 use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\Deduction;
-use Jdclzn\PayrollEngine\Data\LoanDeduction;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
+use Jdclzn\PayrollEngine\Data\Deduction;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
+use Jdclzn\PayrollEngine\Data\LoanDeduction;
 use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
@@ -16,8 +16,7 @@ final readonly class DeductionOverlapPolicy implements PayrollEdgeCasePolicy
 {
     public function __construct(
         private EdgeCasePolicyConfig $config,
-    ) {
-    }
+    ) {}
 
     public function prepare(
         CompanyProfile $company,
@@ -112,6 +111,7 @@ final readonly class DeductionOverlapPolicy implements PayrollEdgeCasePolicy
 
             if (! isset($merged[$key])) {
                 $merged[$key] = $deduction;
+
                 continue;
             }
 
@@ -137,6 +137,7 @@ final readonly class DeductionOverlapPolicy implements PayrollEdgeCasePolicy
 
             if (! isset($merged[$key])) {
                 $merged[$key] = $deduction;
+
                 continue;
             }
 

@@ -19,7 +19,7 @@ final class EmployeeProfileNormalizer
     public function __construct(
         ?AttributeReader $reader = null,
     ) {
-        $this->reader = $reader ?? new AttributeReader();
+        $this->reader = $reader ?? new AttributeReader;
     }
 
     private readonly AttributeReader $reader;

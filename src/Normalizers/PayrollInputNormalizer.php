@@ -3,6 +3,7 @@
 namespace Jdclzn\PayrollEngine\Normalizers;
 
 use Jdclzn\PayrollEngine\Data\Adjustment;
+use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\Deduction;
 use Jdclzn\PayrollEngine\Data\LoanDeduction;
 use Jdclzn\PayrollEngine\Data\OvertimeEntry;
@@ -19,7 +20,7 @@ final class PayrollInputNormalizer
         ?AttributeReader $reader = null,
         ?PayrollPeriodNormalizer $periodNormalizer = null,
     ) {
-        $this->reader = $reader ?? new AttributeReader();
+        $this->reader = $reader ?? new AttributeReader;
         $this->periodNormalizer = $periodNormalizer ?? new PayrollPeriodNormalizer($this->reader);
     }
 
@@ -27,7 +28,7 @@ final class PayrollInputNormalizer
 
     private readonly PayrollPeriodNormalizer $periodNormalizer;
 
-    public function normalize(mixed $input, \Jdclzn\PayrollEngine\Data\CompanyProfile $company): PayrollInput
+    public function normalize(mixed $input, CompanyProfile $company): PayrollInput
     {
         if ($input instanceof PayrollInput) {
             return $input;
@@ -74,6 +75,7 @@ final class PayrollInputNormalizer
         foreach ($entries as $entry) {
             if ($entry instanceof OvertimeEntry) {
                 $normalized[] = $entry;
+
                 continue;
             }
 
@@ -139,6 +141,7 @@ final class PayrollInputNormalizer
         foreach ($entries as $entry) {
             if ($entry instanceof Adjustment) {
                 $normalized[] = $entry;
+
                 continue;
             }
 
@@ -167,6 +170,7 @@ final class PayrollInputNormalizer
         foreach ($entries as $entry) {
             if ($entry instanceof Deduction) {
                 $normalized[] = $entry;
+
                 continue;
             }
 
@@ -193,6 +197,7 @@ final class PayrollInputNormalizer
         foreach ($entries as $entry) {
             if ($entry instanceof LoanDeduction) {
                 $normalized[] = $entry;
+
                 continue;
             }
 

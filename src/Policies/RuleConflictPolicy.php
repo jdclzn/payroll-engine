@@ -14,8 +14,7 @@ final readonly class RuleConflictPolicy implements PayrollEdgeCasePolicy
 {
     public function __construct(
         private EdgeCasePolicyConfig $config,
-    ) {
-    }
+    ) {}
 
     public function prepare(
         CompanyProfile $company,

@@ -10,6 +10,7 @@ use Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningC
 use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
+use Jdclzn\PayrollEngine\Data\LoanDeduction;
 use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
@@ -28,8 +29,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
         private PhilHealthContributionCalculator $philHealthCalculator,
         private PagIbigContributionCalculatorContract $pagIbigCalculator,
         private WithholdingTaxCalculatorContract $withholdingTaxCalculator,
-    ) {
-    }
+    ) {}
 
     public function calculate(CompanyProfile $company, EmployeeProfile $employee, PayrollInput $input): PayrollResult
     {
@@ -84,6 +84,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
 
             if ($line->type === 'separate_payout') {
                 $separatePayouts[] = $line;
+
                 continue;
             }
 
@@ -136,13 +137,13 @@ final readonly class PayrollCalculator implements PayrollWorkflow
                 $deduction->amount,
                 false,
                 TraceMetadata::line(
-                    source: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction ? 'payroll_input.loan_deductions' : 'payroll_input.manual_deductions',
-                    appliedRule: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction ? 'loan_deduction' : 'manual_deduction',
+                    source: $deduction instanceof LoanDeduction ? 'payroll_input.loan_deductions' : 'payroll_input.manual_deductions',
+                    appliedRule: $deduction instanceof LoanDeduction ? 'loan_deduction' : 'manual_deduction',
                     formula: 'input amount',
                     basis: [
                         'amount' => $deduction->amount,
                     ],
-                    extra: $deduction instanceof \Jdclzn\PayrollEngine\Data\LoanDeduction
+                    extra: $deduction instanceof LoanDeduction
                         ? ['loan_reference' => $deduction->loanReference]
                         : [],
                 ),
@@ -263,6 +264,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
 
         if ($line->type === 'separate_payout') {
             $separatePayouts[] = $line;
+
             return;
         }
 

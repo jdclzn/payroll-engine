@@ -22,6 +22,5 @@ final readonly class StatutoryProfile
         public ?Money $upgradedPagIbigContribution = null,
         public ?PagIbigContributionSchedule $pagIbigContributionSchedule = null,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 }

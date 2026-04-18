@@ -32,8 +32,7 @@ final readonly class PayrollResult
         public Money $bonusTaxWithheld,
         public array $issues = [],
         public array $audit = [],
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $overrides

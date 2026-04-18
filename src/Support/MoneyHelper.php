@@ -18,8 +18,6 @@ final class MoneyHelper
      * Passing null falls back to the package default currency. A Currency
      * instance or an existing Money object may also be supplied to preserve
      * the current currency context.
-     *
-     * @param  string|Currency|Money|null  $currency
      */
     public static function currency(string|Currency|Money|null $currency = null): Currency
     {
@@ -48,8 +46,6 @@ final class MoneyHelper
 
     /**
      * Creates a zero-value Money object in the resolved currency context.
-     *
-     * @param  string|Currency|Money|null  $currency
      */
     public static function zero(string|Currency|Money|null $currency = null): Money
     {
@@ -64,7 +60,6 @@ final class MoneyHelper
      * using ISO currency subunits. Null or empty values are normalized to zero.
      *
      * @param  int|float|string|null  $amount  Amount in major units, such as 1250.75.
-     * @param  string|Currency|Money|null  $currency
      */
     public static function fromNumeric(int|float|string|null $amount, string|Currency|Money|null $currency = null): Money
     {
@@ -81,7 +76,7 @@ final class MoneyHelper
     /**
      * Sums a list of Money values that share the same currency.
      *
-      * @param  iterable<Money>  $items
+     * @param  iterable<Money>  $items
      * @param  string|Currency|Money|null  $currency  Currency to use when the iterable is empty.
      */
     public static function sum(iterable $items, string|Currency|Money|null $currency = null): Money
@@ -194,8 +189,6 @@ final class MoneyHelper
 
     /**
      * Normalizes a numeric amount into a decimal string accepted by the parser.
-     *
-     * @param  int|float|string  $amount
      */
     private static function normalizeDecimal(int|float|string $amount): string
     {
@@ -221,7 +214,7 @@ final class MoneyHelper
             return $currencies;
         }
 
-        $currencies = new ISOCurrencies();
+        $currencies = new ISOCurrencies;
 
         return $currencies;
     }

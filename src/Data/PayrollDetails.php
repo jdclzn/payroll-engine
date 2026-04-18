@@ -8,6 +8,5 @@ final readonly class PayrollDetails
         public ?string $accountNumber,
         public ?string $bank,
         public ?string $branch,
-    ) {
-    }
+    ) {}
 }

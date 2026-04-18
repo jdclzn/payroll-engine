@@ -11,8 +11,7 @@ final readonly class ClientPolicyRegistry
      */
     public function __construct(
         private ?array $presets = null
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>
@@ -27,7 +26,7 @@ final readonly class ClientPolicyRegistry
             }
         }
 
-        return (new BaseClientPolicyPreset())->defaults();
+        return (new BaseClientPolicyPreset)->defaults();
     }
 
     /**
@@ -36,8 +35,8 @@ final readonly class ClientPolicyRegistry
     private function presets(): array
     {
         return $this->presets ?? [
-            new KrbsClientPolicyPreset(),
-            new BaseClientPolicyPreset(),
+            new KrbsClientPolicyPreset,
+            new BaseClientPolicyPreset,
         ];
     }
 }

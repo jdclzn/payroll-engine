@@ -2,7 +2,10 @@
 
 namespace Jdclzn\PayrollEngine;
 
+use Carbon\CarbonImmutable;
 use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use Jdclzn\PayrollEngine\Data\PayrollInput;
+use Jdclzn\PayrollEngine\Data\PayrollPeriod;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Data\PayrollRun;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
@@ -10,8 +13,8 @@ use Jdclzn\PayrollEngine\Normalizers\CompanyProfileNormalizer;
 use Jdclzn\PayrollEngine\Normalizers\EmployeeProfileNormalizer;
 use Jdclzn\PayrollEngine\Normalizers\PayrollInputNormalizer;
 use Jdclzn\PayrollEngine\Normalizers\PayrollPeriodNormalizer;
-use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
 use Jdclzn\PayrollEngine\Policies\AttendanceDataPolicy;
+use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
 use Jdclzn\PayrollEngine\Policies\DeductionOverlapPolicy;
 use Jdclzn\PayrollEngine\Policies\NetPayResolutionPolicy;
 use Jdclzn\PayrollEngine\Policies\PayrollEdgeCasePolicyPipeline;
@@ -67,9 +70,9 @@ class PayrollEngine
      */
     public function __construct(array $config = [], ?callable $factory = null)
     {
-        $reader = new AttributeReader();
-        $registry = new ClientPolicyRegistry();
-        $edgeCaseConfig = new EdgeCasePolicyConfig();
+        $reader = new AttributeReader;
+        $registry = new ClientPolicyRegistry;
+        $edgeCaseConfig = new EdgeCasePolicyConfig;
         $factoryResolver = $factory === null ? null : $factory(...);
         $this->companyNormalizer = new CompanyProfileNormalizer($reader, $registry, $config);
         $this->employeeNormalizer = new EmployeeProfileNormalizer($reader);
@@ -79,15 +82,15 @@ class PayrollEngine
         $this->edgeCasePolicyPipeline = new PayrollEdgeCasePolicyPipeline(
             $this->edgeCasePolicies($config, $edgeCaseConfig, $factoryResolver)
         );
-        $this->resultTraceEnricher = new PayrollResultTraceEnricher();
-        $this->auditTrailBuilder = new PayrollAuditTrailBuilder();
-        $this->payslipBuilder = new PayslipBuilder();
-        $this->registerBuilder = new PayrollRegisterBuilder();
-        $this->allocationSummaryBuilder = new PayrollAllocationSummaryBuilder();
-        $this->retroAdjustmentInputBuilder = new RetroAdjustmentInputBuilder();
-        $this->companyValidator = new CompanyProfileValidator();
-        $this->employeeValidator = new EmployeeProfileValidator();
-        $this->inputValidator = new PayrollInputValidator();
+        $this->resultTraceEnricher = new PayrollResultTraceEnricher;
+        $this->auditTrailBuilder = new PayrollAuditTrailBuilder;
+        $this->payslipBuilder = new PayslipBuilder;
+        $this->registerBuilder = new PayrollRegisterBuilder;
+        $this->allocationSummaryBuilder = new PayrollAllocationSummaryBuilder;
+        $this->retroAdjustmentInputBuilder = new RetroAdjustmentInputBuilder;
+        $this->companyValidator = new CompanyProfileValidator;
+        $this->employeeValidator = new EmployeeProfileValidator;
+        $this->inputValidator = new PayrollInputValidator;
     }
 
     public function compute(mixed $company, mixed $employee, mixed $input): PayrollResult
@@ -142,6 +145,7 @@ class PayrollEngine
         foreach ($configured as $definition) {
             if ($definition instanceof PayrollEdgeCasePolicy) {
                 $policies[] = $definition;
+
                 continue;
             }
 
@@ -151,7 +155,7 @@ class PayrollEngine
 
             $instance = $factory !== null
                 ? $factory($definition)
-                : new $definition();
+                : new $definition;
 
             if (! $instance instanceof PayrollEdgeCasePolicy) {
                 throw new InvalidPayrollData(sprintf(
@@ -240,14 +244,14 @@ class PayrollEngine
         PayrollResult $original,
         PayrollResult $recomputed,
         mixed $releasePeriod,
-    ): \Jdclzn\PayrollEngine\Data\PayrollInput {
+    ): PayrollInput {
         $periodPayload = $releasePeriod;
 
-        if (! $releasePeriod instanceof \Jdclzn\PayrollEngine\Data\PayrollPeriod && is_array($releasePeriod)) {
+        if (! $releasePeriod instanceof PayrollPeriod && is_array($releasePeriod)) {
             $periodPayload = $releasePeriod + ['run_type' => 'adjustment'];
         }
 
-        if (! $releasePeriod instanceof \Jdclzn\PayrollEngine\Data\PayrollPeriod && is_object($releasePeriod)) {
+        if (! $releasePeriod instanceof PayrollPeriod && is_object($releasePeriod)) {
             $periodPayload = (array) $releasePeriod;
             $periodPayload['run_type'] = $periodPayload['run_type'] ?? 'adjustment';
         }
@@ -270,7 +274,7 @@ class PayrollEngine
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function generatePayslips(PayrollRun $run, ?\Carbon\CarbonImmutable $generatedAt = null): array
+    public function generatePayslips(PayrollRun $run, ?CarbonImmutable $generatedAt = null): array
     {
         $run->assertCanGeneratePayslips($generatedAt);
 

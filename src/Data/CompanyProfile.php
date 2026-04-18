@@ -42,8 +42,7 @@ final readonly class CompanyProfile
         public array $payrollSchedules = [],
         public ?string $logo = null,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 
     public function periodsPerYear(): int
     {

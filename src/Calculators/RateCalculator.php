@@ -8,6 +8,7 @@ use Jdclzn\PayrollEngine\Data\EmployeeProfile;
 use Jdclzn\PayrollEngine\Data\PayrollPeriod;
 use Jdclzn\PayrollEngine\Data\RateSnapshot;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use Money\Money;
 
 /**
  * Default rate-calculation strategy used by the payroll engine.
@@ -101,8 +102,8 @@ final class RateCalculator implements RateCalculatorContract
     private function proratedFinalSettlementBasicPay(
         EmployeeProfile $employee,
         PayrollPeriod $period,
-        \Money\Money $regularScheduledBasicPay,
-    ): \Money\Money {
+        Money $regularScheduledBasicPay,
+    ): Money {
         $separationDate = $employee->employment->dateResigned;
 
         if ($separationDate === null) {

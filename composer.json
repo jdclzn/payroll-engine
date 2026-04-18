@@ -27,6 +27,7 @@
   },
   "require-dev": {
     "illuminate/database": "^12.56|^13.0",
+    "laravel/pint": "^1.0",
     "pestphp/pest": "^3.8"
   },
   "autoload": {
@@ -40,6 +41,8 @@
     }
   },
   "scripts": {
+    "format": "@php vendor/bin/pint",
+    "format:check": "@php vendor/bin/pint --test",
     "test": "@php vendor/bin/pest",
     "release:check": "@php bin/release.php",
     "release": "npm run release --",

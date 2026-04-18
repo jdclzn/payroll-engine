@@ -13,8 +13,7 @@ final readonly class EmploymentProfile
         public ?string $reasonForResignation,
         public string $employmentStatus,
         public ?string $department,
-    ) {
-    }
+    ) {}
 
     public function isActiveDuring(PayrollPeriod $period): bool
     {

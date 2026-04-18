@@ -15,6 +15,5 @@ final readonly class VariableEarningEntry
         public Money $amount,
         public bool $taxable = true,
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 }

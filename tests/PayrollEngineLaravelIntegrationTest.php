@@ -17,9 +17,7 @@ function laravelIntegrationConfigRepository(array $items = []): object
         /**
          * @param  array<string, mixed>  $items
          */
-        public function __construct(private array $items = [])
-        {
-        }
+        public function __construct(private array $items = []) {}
 
         public function get(string $key, mixed $default = null): mixed
         {

@@ -6,8 +6,8 @@ use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContr
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
 use Jdclzn\PayrollEngine\Data\PagIbigContributionResult;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Data\PayrollInput;
+use Jdclzn\PayrollEngine\Data\PayrollLine;
 use Jdclzn\PayrollEngine\Enums\PagIbigContributionMode;
 use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
 use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
@@ -74,7 +74,6 @@ final class PagIbigContributionCalculator implements PagIbigContributionCalculat
      * - `employer`: payroll line for the employer Pag-IBIG contribution
      * - `separateDeductions`: optional additional deduction lines such as a
      *   separated Pag-IBIG loan amortization
-     *
      */
     public function calculate(
         CompanyProfile $company,

@@ -13,8 +13,7 @@ final readonly class PayrollPeriod
         public CarbonImmutable $endDate,
         public CarbonImmutable $releaseDate,
         public string $runType = 'regular',
-    ) {
-    }
+    ) {}
 
     public function normalizedRunType(): PayrollRunType
     {

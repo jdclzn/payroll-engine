@@ -11,6 +11,5 @@ final readonly class Adjustment
         public Money $amount,
         public bool $taxable = true,
         public bool $separatePayout = false,
-    ) {
-    }
+    ) {}
 }

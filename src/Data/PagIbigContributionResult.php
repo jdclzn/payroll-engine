@@ -11,6 +11,5 @@ final readonly class PagIbigContributionResult
         public PayrollLine $employee,
         public PayrollLine $employer,
         public array $separateDeductions = [],
-    ) {
-    }
+    ) {}
 }

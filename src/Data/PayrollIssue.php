@@ -12,6 +12,5 @@ final readonly class PayrollIssue
         public string $message,
         public string $severity = 'warning',
         public array $metadata = [],
-    ) {
-    }
+    ) {}
 }

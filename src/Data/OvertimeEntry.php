@@ -13,6 +13,5 @@ final readonly class OvertimeEntry
         public bool $taxable = true,
         public bool $nightDifferential = false,
         public ?Money $manualAmount = null,
-    ) {
-    }
+    ) {}
 }

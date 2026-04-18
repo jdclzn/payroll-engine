@@ -12,6 +12,5 @@ final readonly class RateSnapshot
         public Money $dailyRate,
         public Money $hourlyRate,
         public bool $fixedPerDayApplied,
-    ) {
-    }
+    ) {}
 }

@@ -2,8 +2,6 @@
 
 namespace Jdclzn\PayrollEngine;
 
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Data\PayrollRun;
 use Illuminate\Support\Facades\Facade;
 
 /**

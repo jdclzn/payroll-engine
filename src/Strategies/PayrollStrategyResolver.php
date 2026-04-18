@@ -2,7 +2,6 @@
 
 namespace Jdclzn\PayrollEngine\Strategies;
 
-use Closure;
 use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
 use Jdclzn\PayrollEngine\Calculators\PagIbigContributionCalculator;
 use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
@@ -87,8 +86,8 @@ final class PayrollStrategyResolver
             $this->rateCalculatorFor($clientCode),
             $this->overtimeCalculatorFor($clientCode),
             $this->variableEarningCalculatorFor($clientCode),
-            new SssContributionCalculator(),
-            new PhilHealthContributionCalculator(),
+            new SssContributionCalculator,
+            new PhilHealthContributionCalculator,
             $this->pagIbigContributionCalculatorFor($clientCode),
             $this->withholdingTaxCalculatorFor($clientCode),
         );
@@ -250,7 +249,7 @@ final class PayrollStrategyResolver
 
         $instance = $this->factory !== null
             ? ($this->factory)($definition)
-            : new $definition();
+            : new $definition;
 
         if (! $instance instanceof $contract) {
             throw new InvalidPayrollData(sprintf(

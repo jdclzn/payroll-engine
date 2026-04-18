@@ -7,7 +7,7 @@ use Jdclzn\PayrollEngine\Support\MoneyHelper;
 
 function offCycleEngine(): PayrollEngine
 {
-    return new PayrollEngine();
+    return new PayrollEngine;
 }
 
 /**

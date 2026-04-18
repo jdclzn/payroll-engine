@@ -11,6 +11,5 @@ final readonly class AuditEntry
         public string $action,
         public CarbonImmutable $occurredAt,
         public ?string $notes = null,
-    ) {
-    }
+    ) {}
 }

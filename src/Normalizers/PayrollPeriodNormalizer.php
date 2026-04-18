@@ -13,7 +13,7 @@ final readonly class PayrollPeriodNormalizer
     public function __construct(
         ?AttributeReader $reader = null,
     ) {
-        $this->reader = $reader ?? new AttributeReader();
+        $this->reader = $reader ?? new AttributeReader;
     }
 
     private AttributeReader $reader;

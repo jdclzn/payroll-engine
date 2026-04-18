@@ -15,8 +15,7 @@ final readonly class PayrollEdgeCasePolicyPipeline
      */
     public function __construct(
         private array $policies,
-    ) {
-    }
+    ) {}
 
     public function prepare(
         CompanyProfile $company,

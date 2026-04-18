@@ -9,9 +9,9 @@ use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
 use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
 use Jdclzn\PayrollEngine\Enums\TaxStrategy;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
+use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
 use Jdclzn\PayrollEngine\Support\AttributeReader;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
 
 final readonly class CompanyProfileNormalizer
 {
@@ -23,8 +23,8 @@ final readonly class CompanyProfileNormalizer
         ?ClientPolicyRegistry $registry = null,
         private readonly array $config = [],
     ) {
-        $this->reader = $reader ?? new AttributeReader();
-        $this->registry = $registry ?? new ClientPolicyRegistry();
+        $this->reader = $reader ?? new AttributeReader;
+        $this->registry = $registry ?? new ClientPolicyRegistry;
     }
 
     private readonly AttributeReader $reader;

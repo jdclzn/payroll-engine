@@ -24,8 +24,7 @@ final class PayrollRun
         public ?CarbonImmutable $approvedAt = null,
         public ?CarbonImmutable $processedAt = null,
         public ?CarbonImmutable $releasedAt = null,
-    ) {
-    }
+    ) {}
 
     public function prepare(string $actor, ?CarbonImmutable $preparedAt = null, ?string $notes = null): self
     {

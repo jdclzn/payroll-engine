@@ -5,9 +5,9 @@ namespace Jdclzn\PayrollEngine\Policies;
 use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
+use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollIssue;
 use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
 use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
@@ -18,8 +18,7 @@ final readonly class NetPayResolutionPolicy implements PayrollEdgeCasePolicy
 {
     public function __construct(
         private EdgeCasePolicyConfig $config,
-    ) {
-    }
+    ) {}
 
     public function prepare(
         CompanyProfile $company,
@@ -109,6 +108,7 @@ final readonly class NetPayResolutionPolicy implements PayrollEdgeCasePolicy
 
             if ($remaining->isZero()) {
                 array_splice($deductions, $index, 1);
+
                 continue;
             }
 
