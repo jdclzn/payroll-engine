@@ -1,0 +1,15 @@
+/vendor/
+/.idea/
+/.idea/laravel-idea-personal.xml
+/.idea/laravel-idea.xml
+/.fleet/
+
+/.phpunit.result.cache
+/.php-cs-fixer.cache
+/.pest.cache
+/coverage/
+
+.DS_Store
+.styleci.yml
+
+
