@@ -37,10 +37,10 @@ final class PayrollInputValidator
             }
         }
 
-        foreach ([$input->adjustments, $input->manualDeductions, $input->loanDeductions] as $entries) {
+        foreach ([$input->variableEarningEntries, $input->adjustments, $input->manualDeductions, $input->loanDeductions] as $entries) {
             foreach ($entries as $entry) {
                 if ($entry->amount->isNegative()) {
-                    throw new InvalidPayrollData('Payroll input adjustments and deductions cannot be negative.');
+                    throw new InvalidPayrollData('Payroll input variable earnings, adjustments, and deductions cannot be negative.');
                 }
             }
         }

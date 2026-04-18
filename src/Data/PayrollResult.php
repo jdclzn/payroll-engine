@@ -12,6 +12,7 @@ final readonly class PayrollResult
      * @param  array<int, PayrollLine>  $employeeContributions
      * @param  array<int, PayrollLine>  $employerContributions
      * @param  array<int, PayrollLine>  $separatePayouts
+     * @param  array<int, PayrollIssue>  $issues
      */
     public function __construct(
         public CompanyProfile $company,
@@ -28,6 +29,31 @@ final readonly class PayrollResult
         public Money $netPay,
         public Money $takeHomePay,
         public Money $bonusTaxWithheld,
+        public array $issues = [],
     ) {
+    }
+
+    /**
+     * @param  array<string, mixed>  $overrides
+     */
+    public function with(array $overrides = []): self
+    {
+        return new self(
+            company: $overrides['company'] ?? $this->company,
+            employee: $overrides['employee'] ?? $this->employee,
+            period: $overrides['period'] ?? $this->period,
+            rates: $overrides['rates'] ?? $this->rates,
+            earnings: $overrides['earnings'] ?? $this->earnings,
+            deductions: $overrides['deductions'] ?? $this->deductions,
+            employeeContributions: $overrides['employeeContributions'] ?? $this->employeeContributions,
+            employerContributions: $overrides['employerContributions'] ?? $this->employerContributions,
+            separatePayouts: $overrides['separatePayouts'] ?? $this->separatePayouts,
+            grossPay: $overrides['grossPay'] ?? $this->grossPay,
+            taxableIncome: $overrides['taxableIncome'] ?? $this->taxableIncome,
+            netPay: $overrides['netPay'] ?? $this->netPay,
+            takeHomePay: $overrides['takeHomePay'] ?? $this->takeHomePay,
+            bonusTaxWithheld: $overrides['bonusTaxWithheld'] ?? $this->bonusTaxWithheld,
+            issues: $overrides['issues'] ?? $this->issues,
+        );
     }
 }

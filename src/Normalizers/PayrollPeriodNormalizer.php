@@ -5,6 +5,7 @@ namespace Jdclzn\PayrollEngine\Normalizers;
 use Carbon\CarbonImmutable;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\PayrollPeriod;
+use Jdclzn\PayrollEngine\Enums\PayrollRunType;
 use Jdclzn\PayrollEngine\Support\AttributeReader;
 
 final readonly class PayrollPeriodNormalizer
@@ -36,7 +37,7 @@ final readonly class PayrollPeriodNormalizer
             startDate: $start ?? CarbonImmutable::now()->startOfMonth(),
             endDate: $end ?? CarbonImmutable::now()->endOfMonth(),
             releaseDate: $release ?? CarbonImmutable::now(),
-            runType: (string) $this->reader->get($period, ['run_type', 'runType'], 'regular'),
+            runType: PayrollRunType::parse((string) $this->reader->get($period, ['run_type', 'runType'], 'regular'))->value,
         );
     }
 

@@ -6,6 +6,7 @@ use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContr
 use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\PayrollWorkflow;
 use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
 use Jdclzn\PayrollEngine\Data\CompanyProfile;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
@@ -21,6 +22,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
     public function __construct(
         private RateCalculatorContract $rateCalculator,
         private OvertimeCalculatorContract $overtimeCalculator,
+        private VariableEarningCalculatorContract $variableEarningCalculator,
         private SssContributionCalculator $sssCalculator,
         private PhilHealthContributionCalculator $philHealthCalculator,
         private PagIbigContributionCalculatorContract $pagIbigCalculator,
@@ -30,6 +32,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
 
     public function calculate(CompanyProfile $company, EmployeeProfile $employee, PayrollInput $input): PayrollResult
     {
+        $runType = $input->period->normalizedRunType();
         $rates = $this->rateCalculator->calculate($company, $employee, $input->period);
         $earnings = [];
         $separatePayouts = [];
@@ -38,7 +41,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
             $earnings[] = new PayrollLine('earning', 'Basic Pay', $rates->scheduledBasicPay, true);
         }
 
-        if (! $input->period->isSpecialRun()) {
+        if ($runType->usesRegularAllowances()) {
             $this->appendAllowanceLine($company, $earnings, $separatePayouts, 'Representation Allowance', $employee->compensation->representationAllowance);
             $this->appendAllowanceLine($company, $earnings, $separatePayouts, 'Allowance', $employee->compensation->otherAllowances);
         }
@@ -63,6 +66,10 @@ final readonly class PayrollCalculator implements PayrollWorkflow
             $earnings[] = $line;
         }
 
+        foreach ($this->variableEarningCalculator->calculate($company, $employee, $input, $rates) as $line) {
+            $earnings[] = $line;
+        }
+
         if (! $input->bonus->isZero()) {
             $earnings[] = new PayrollLine(
                 type: 'earning',
@@ -75,7 +82,7 @@ final readonly class PayrollCalculator implements PayrollWorkflow
         $employeeContributions = [];
         $employerContributions = [];
 
-        if (! $input->period->isSpecialRun()) {
+        if ($runType->usesMandatoryContributions()) {
             $periodDivisor = $this->statutoryPeriodDivisor($company);
             $sss = $this->sssCalculator->calculate($employee->compensation->monthlyBasicSalary, $employee->statutory->manualSssContribution, $periodDivisor);
             $philHealth = $this->philHealthCalculator->calculate($employee->compensation->monthlyBasicSalary, $employee->statutory->manualPhilHealthContribution, $periodDivisor);

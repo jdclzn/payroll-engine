@@ -10,10 +10,18 @@ use Jdclzn\PayrollEngine\Normalizers\EmployeeProfileNormalizer;
 use Jdclzn\PayrollEngine\Normalizers\PayrollInputNormalizer;
 use Jdclzn\PayrollEngine\Normalizers\PayrollPeriodNormalizer;
 use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
+use Jdclzn\PayrollEngine\Policies\AttendanceDataPolicy;
+use Jdclzn\PayrollEngine\Policies\DeductionOverlapPolicy;
+use Jdclzn\PayrollEngine\Policies\NetPayResolutionPolicy;
+use Jdclzn\PayrollEngine\Policies\PayrollEdgeCasePolicyPipeline;
+use Jdclzn\PayrollEngine\Policies\RuleConflictPolicy;
+use Jdclzn\PayrollEngine\Reports\PayrollAllocationSummaryBuilder;
 use Jdclzn\PayrollEngine\Reports\PayrollRegisterBuilder;
 use Jdclzn\PayrollEngine\Reports\PayslipBuilder;
 use Jdclzn\PayrollEngine\Strategies\PayrollStrategyResolver;
 use Jdclzn\PayrollEngine\Support\AttributeReader;
+use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
+use Jdclzn\PayrollEngine\Support\RetroAdjustmentInputBuilder;
 use Jdclzn\PayrollEngine\Validators\CompanyProfileValidator;
 use Jdclzn\PayrollEngine\Validators\EmployeeProfileValidator;
 use Jdclzn\PayrollEngine\Validators\PayrollInputValidator;
@@ -32,6 +40,12 @@ class PayrollEngine
 
     private PayrollRegisterBuilder $registerBuilder;
 
+    private PayrollAllocationSummaryBuilder $allocationSummaryBuilder;
+
+    private RetroAdjustmentInputBuilder $retroAdjustmentInputBuilder;
+
+    private PayrollEdgeCasePolicyPipeline $edgeCasePolicyPipeline;
+
     private PayrollStrategyResolver $strategyResolver;
 
     private CompanyProfileValidator $companyValidator;
@@ -48,13 +62,22 @@ class PayrollEngine
     {
         $reader = new AttributeReader();
         $registry = new ClientPolicyRegistry();
+        $edgeCaseConfig = new EdgeCasePolicyConfig();
         $this->companyNormalizer = new CompanyProfileNormalizer($reader, $registry, $config);
         $this->employeeNormalizer = new EmployeeProfileNormalizer($reader);
         $this->periodNormalizer = new PayrollPeriodNormalizer($reader);
         $this->inputNormalizer = new PayrollInputNormalizer($reader, $this->periodNormalizer);
         $this->strategyResolver = new PayrollStrategyResolver($config, $factory);
+        $this->edgeCasePolicyPipeline = new PayrollEdgeCasePolicyPipeline([
+            new RuleConflictPolicy($edgeCaseConfig),
+            new AttendanceDataPolicy($edgeCaseConfig),
+            new DeductionOverlapPolicy($edgeCaseConfig),
+            new NetPayResolutionPolicy($edgeCaseConfig),
+        ]);
         $this->payslipBuilder = new PayslipBuilder();
         $this->registerBuilder = new PayrollRegisterBuilder();
+        $this->allocationSummaryBuilder = new PayrollAllocationSummaryBuilder();
+        $this->retroAdjustmentInputBuilder = new RetroAdjustmentInputBuilder();
         $this->companyValidator = new CompanyProfileValidator();
         $this->employeeValidator = new EmployeeProfileValidator();
         $this->inputValidator = new PayrollInputValidator();
@@ -68,10 +91,13 @@ class PayrollEngine
         $this->companyValidator->validate($companyProfile);
         $this->employeeValidator->validate($employeeProfile);
         $this->inputValidator->validate($payrollInput);
+        $payrollInput = $this->edgeCasePolicyPipeline->prepare($companyProfile, $employeeProfile, $payrollInput);
 
-        return $this->strategyResolver
+        $result = $this->strategyResolver
             ->workflowFor($companyProfile->clientCode)
             ->calculate($companyProfile, $employeeProfile, $payrollInput);
+
+        return $this->edgeCasePolicyPipeline->finalize($companyProfile, $employeeProfile, $payrollInput, $result);
     }
 
     /**
@@ -132,6 +158,36 @@ class PayrollEngine
     public function register(array $results): array
     {
         return $this->payrollRegister($results);
+    }
+
+    /**
+     * @param  array<int, PayrollResult>  $results
+     * @return array<int, array<string, mixed>>
+     */
+    public function allocationSummary(array $results, string $dimension): array
+    {
+        return $this->allocationSummaryBuilder->build($results, $dimension);
+    }
+
+    public function retroAdjustmentInput(
+        PayrollResult $original,
+        PayrollResult $recomputed,
+        mixed $releasePeriod,
+    ): \Jdclzn\PayrollEngine\Data\PayrollInput {
+        $periodPayload = $releasePeriod;
+
+        if (! $releasePeriod instanceof \Jdclzn\PayrollEngine\Data\PayrollPeriod && is_array($releasePeriod)) {
+            $periodPayload = $releasePeriod + ['run_type' => 'adjustment'];
+        }
+
+        if (! $releasePeriod instanceof \Jdclzn\PayrollEngine\Data\PayrollPeriod && is_object($releasePeriod)) {
+            $periodPayload = (array) $releasePeriod;
+            $periodPayload['run_type'] = $periodPayload['run_type'] ?? 'adjustment';
+        }
+
+        $periodProfile = $this->periodNormalizer->normalize($periodPayload, $recomputed->company);
+
+        return $this->retroAdjustmentInputBuilder->build($original, $recomputed, $periodProfile);
     }
 
     /**

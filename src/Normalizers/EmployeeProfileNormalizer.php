@@ -3,6 +3,7 @@
 namespace Jdclzn\PayrollEngine\Normalizers;
 
 use Carbon\CarbonImmutable;
+use Jdclzn\PayrollEngine\Data\AllocationProfile;
 use Jdclzn\PayrollEngine\Data\CompensationProfile;
 use Jdclzn\PayrollEngine\Data\EmployeeProfile;
 use Jdclzn\PayrollEngine\Data\EmploymentProfile;
@@ -70,6 +71,15 @@ final class EmployeeProfileNormalizer
             bank: $this->reader->get($employee, ['bank', 'payroll.bank']),
             branch: $this->reader->get($employee, ['branch', 'payroll.branch']),
         );
+        $allocation = new AllocationProfile(
+            projectCode: $this->reader->get($employee, ['project_code', 'projectCode', 'allocation.project_code', 'allocation.projectCode']),
+            projectName: $this->reader->get($employee, ['project_name', 'projectName', 'allocation.project_name', 'allocation.projectName']),
+            costCenter: $this->reader->get($employee, ['cost_center', 'costCenter', 'cost_centre', 'costCentre', 'allocation.cost_center', 'allocation.costCenter', 'allocation.cost_centre', 'allocation.costCentre']),
+            branch: $payrollDetails->branch,
+            department: $employment->department,
+            vessel: $this->reader->get($employee, ['vessel', 'vessel_name', 'vesselName', 'allocation.vessel', 'allocation.vessel_name', 'allocation.vesselName']),
+            dimensions: $this->allocationDimensions($employee),
+        );
 
         return new EmployeeProfile(
             employeeNumber: (string) $this->reader->get($employee, ['employee_number', 'employeeNumber', 'number'], 'EMP-UNKNOWN'),
@@ -80,6 +90,7 @@ final class EmployeeProfileNormalizer
             compensation: $compensation,
             statutory: $statutory,
             payrollDetails: $payrollDetails,
+            allocation: $allocation,
             bonusTaxShieldAmount: MoneyHelper::fromNumeric($this->reader->get($employee, ['tax_shield_amount_for_bonuses', 'taxShieldAmountForBonuses', 'annual_bonus_tax_shield', 'annualBonusTaxShield'], 0)),
             metadata: is_array($employee) ? $employee : [],
         );
@@ -187,5 +198,33 @@ final class EmployeeProfileNormalizer
         }
 
         return PagIbigContributionSchedule::from($value);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function allocationDimensions(mixed $employee): array
+    {
+        $value = $this->reader->get($employee, [
+            'allocation_dimensions',
+            'allocationDimensions',
+            'allocation.dimensions',
+        ], []);
+
+        if (! is_array($value)) {
+            return [];
+        }
+
+        $normalized = [];
+
+        foreach ($value as $key => $dimensionValue) {
+            if (! is_string($key) || trim($key) === '' || $dimensionValue === null || $dimensionValue === '') {
+                continue;
+            }
+
+            $normalized[strtolower(trim($key))] = trim((string) $dimensionValue);
+        }
+
+        return $normalized;
     }
 }

@@ -9,11 +9,13 @@ use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
 use Jdclzn\PayrollEngine\Calculators\PhilHealthContributionCalculator;
 use Jdclzn\PayrollEngine\Calculators\RateCalculator;
 use Jdclzn\PayrollEngine\Calculators\SssContributionCalculator;
+use Jdclzn\PayrollEngine\Calculators\VariableEarningCalculator;
 use Jdclzn\PayrollEngine\Calculators\WithholdingTaxCalculator;
 use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\PayrollWorkflow;
 use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
 use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
 use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
 
@@ -43,6 +45,11 @@ final class PayrollStrategyResolver
      * @var array<string, WithholdingTaxCalculatorContract>
      */
     private array $withholdingCache = [];
+
+    /**
+     * @var array<string, VariableEarningCalculatorContract>
+     */
+    private array $variableEarningCache = [];
 
     /**
      * @var array<string, PagIbigContributionCalculatorContract>
@@ -79,6 +86,7 @@ final class PayrollStrategyResolver
         return $this->workflowCache[$clientCode] = new PayrollCalculator(
             $this->rateCalculatorFor($clientCode),
             $this->overtimeCalculatorFor($clientCode),
+            $this->variableEarningCalculatorFor($clientCode),
             new SssContributionCalculator(),
             new PhilHealthContributionCalculator(),
             $this->pagIbigContributionCalculatorFor($clientCode),
@@ -131,6 +139,21 @@ final class PayrollStrategyResolver
         );
     }
 
+    private function variableEarningCalculatorFor(string $clientCode): VariableEarningCalculatorContract
+    {
+        $clientCode = $this->normalizeClientCode($clientCode);
+
+        if (isset($this->variableEarningCache[$clientCode])) {
+            return $this->variableEarningCache[$clientCode];
+        }
+
+        return $this->variableEarningCache[$clientCode] = $this->resolve(
+            $this->definitionFor($clientCode, 'variable_earnings') ?? VariableEarningCalculator::class,
+            VariableEarningCalculatorContract::class,
+            'variable_earnings'
+        );
+    }
+
     private function pagIbigContributionCalculatorFor(string $clientCode): PagIbigContributionCalculatorContract
     {
         $clientCode = $this->normalizeClientCode($clientCode);
@@ -177,6 +200,7 @@ final class PayrollStrategyResolver
             'workflow' => PayrollCalculator::class,
             'rate' => RateCalculator::class,
             'overtime' => OvertimeCalculator::class,
+            'variable_earnings' => VariableEarningCalculator::class,
             'withholding' => WithholdingTaxCalculator::class,
             'pagibig' => PagIbigContributionCalculator::class,
         ];

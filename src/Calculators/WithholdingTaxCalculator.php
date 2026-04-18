@@ -19,7 +19,11 @@ final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
         PayrollInput $input,
         Money $taxableIncomeAfterMandatory,
     ): PayrollLine {
-        if ($employee->statutory->minimumWageEarner || $input->period->isSpecialRun() || $taxableIncomeAfterMandatory->isNegative()) {
+        if (
+            $employee->statutory->minimumWageEarner
+            || ! $input->period->normalizedRunType()->usesRegularWithholding()
+            || $taxableIncomeAfterMandatory->isNegative()
+        ) {
             return new PayrollLine('deduction', 'Withholding Tax', MoneyHelper::zero());
         }
 

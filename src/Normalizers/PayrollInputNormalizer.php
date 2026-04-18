@@ -8,6 +8,7 @@ use Jdclzn\PayrollEngine\Data\LoanDeduction;
 use Jdclzn\PayrollEngine\Data\OvertimeEntry;
 use Jdclzn\PayrollEngine\Data\PayrollInput;
 use Jdclzn\PayrollEngine\Data\PayrollPeriod;
+use Jdclzn\PayrollEngine\Data\VariableEarningEntry;
 use Jdclzn\PayrollEngine\Support\AttributeReader;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
@@ -41,6 +42,7 @@ final class PayrollInputNormalizer
         return new PayrollInput(
             period: $period,
             overtimeEntries: $this->normalizeOvertimeEntries($this->reader->get($input, ['overtime', 'overtime_entries', 'overtimeEntries'], [])),
+            variableEarningEntries: $this->normalizeVariableEarningEntries($input),
             adjustments: $this->normalizeAdjustments($this->reader->get($input, ['adjustments', 'earnings_adjustments', 'earningsAdjustments'], [])),
             manualDeductions: $this->normalizeDeductions($this->reader->get($input, ['manual_deductions', 'manualDeductions', 'deductions'], [])),
             loanDeductions: $this->normalizeLoanDeductions($this->reader->get($input, ['loan_deductions', 'loanDeductions', 'loans'], [])),
@@ -54,6 +56,7 @@ final class PayrollInputNormalizer
             pagIbigLoanAmortization: $this->nullableMoney($this->reader->get($input, ['pagibig_loan_amortization', 'pagIbigLoanAmortization', 'hdmf_loan_amortization', 'hdmfLoanAmortization'])),
             pagIbigDueThisRun: $this->nullableBool($this->reader->get($input, ['pagibig_due_this_run', 'pagIbigDueThisRun'])),
             projectedAnnualTaxableIncome: $this->nullableMoney($this->reader->get($input, ['projected_annual_taxable_income', 'projectedAnnualTaxableIncome'])),
+            metadata: is_array($input) ? $input : [],
         );
     }
 
@@ -83,6 +86,41 @@ final class PayrollInputNormalizer
                 manualAmount: $this->nullableMoney($this->reader->get($entry, ['manual_amount', 'manualAmount'])),
             );
         }
+
+        return $normalized;
+    }
+
+    /**
+     * @return array<int, VariableEarningEntry>
+     */
+    private function normalizeVariableEarningEntries(mixed $input): array
+    {
+        $normalized = [];
+
+        $this->appendVariableEarningEntries(
+            $normalized,
+            $this->reader->get($input, ['variable_earnings', 'variableEarnings']),
+            'variable_earning',
+            'Variable Earning',
+        );
+        $this->appendVariableEarningEntries(
+            $normalized,
+            $this->reader->get($input, ['sales_commissions', 'salesCommissions']),
+            'sales_commission',
+            'Sales Commission',
+        );
+        $this->appendVariableEarningEntries(
+            $normalized,
+            $this->reader->get($input, ['production_incentives', 'productionIncentives']),
+            'production_incentive',
+            'Production Incentive',
+        );
+        $this->appendVariableEarningEntries(
+            $normalized,
+            $this->reader->get($input, ['quota_bonuses', 'quotaBonuses']),
+            'quota_bonus',
+            'Quota Bonus',
+        );
 
         return $normalized;
     }
@@ -168,13 +206,104 @@ final class PayrollInputNormalizer
         return $normalized;
     }
 
+    /**
+     * @param  array<int, VariableEarningEntry>  $normalized
+     */
+    private function appendVariableEarningEntries(
+        array &$normalized,
+        mixed $entries,
+        string $defaultType,
+        string $defaultLabel,
+    ): void {
+        if ($entries === null || $entries === '') {
+            return;
+        }
+
+        if (
+            $entries instanceof VariableEarningEntry
+            || $entries instanceof Money
+            || is_int($entries)
+            || is_float($entries)
+            || is_string($entries)
+        ) {
+            $normalized[] = $this->normalizeVariableEarningEntry($entries, $defaultType, $defaultLabel);
+
+            return;
+        }
+
+        if (is_array($entries) && $this->looksLikeSingleVariableEarningEntry($entries)) {
+            $normalized[] = $this->normalizeVariableEarningEntry($entries, $defaultType, $defaultLabel);
+
+            return;
+        }
+
+        if (! is_iterable($entries)) {
+            return;
+        }
+
+        foreach ($entries as $entry) {
+            $normalized[] = $this->normalizeVariableEarningEntry($entry, $defaultType, $defaultLabel);
+        }
+    }
+
+    private function normalizeVariableEarningEntry(
+        mixed $entry,
+        string $defaultType,
+        string $defaultLabel,
+    ): VariableEarningEntry {
+        if ($entry instanceof VariableEarningEntry) {
+            return $entry;
+        }
+
+        if ($entry instanceof Money || is_int($entry) || is_float($entry) || is_string($entry)) {
+            return new VariableEarningEntry(
+                type: $defaultType,
+                label: $defaultLabel,
+                amount: $this->moneyValue($entry),
+                taxable: true,
+                metadata: [],
+            );
+        }
+
+        $metadata = $this->reader->get($entry, ['metadata'], []);
+
+        return new VariableEarningEntry(
+            type: (string) $this->reader->get($entry, ['type'], $defaultType),
+            label: (string) $this->reader->get($entry, ['label', 'name'], $defaultLabel),
+            amount: $this->moneyValue($this->reader->get($entry, ['amount'], 0)),
+            taxable: (bool) $this->reader->get($entry, ['taxable'], true),
+            metadata: is_array($metadata) ? $metadata : [],
+        );
+    }
+
+    /**
+     * @param  array<mixed>  $entry
+     */
+    private function looksLikeSingleVariableEarningEntry(array $entry): bool
+    {
+        return array_key_exists('amount', $entry)
+            || array_key_exists('label', $entry)
+            || array_key_exists('name', $entry)
+            || array_key_exists('type', $entry)
+            || array_key_exists('taxable', $entry);
+    }
+
+    private function moneyValue(mixed $value): Money
+    {
+        if ($value instanceof Money) {
+            return $value;
+        }
+
+        return MoneyHelper::fromNumeric(is_int($value) || is_float($value) || is_string($value) || $value === null ? $value : 0);
+    }
+
     private function nullableMoney(mixed $value): ?Money
     {
         if ($value === null || $value === '') {
             return null;
         }
 
-        return MoneyHelper::fromNumeric($value);
+        return $this->moneyValue($value);
     }
 
     private function nullableBool(mixed $value): ?bool

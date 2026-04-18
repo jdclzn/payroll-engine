@@ -18,6 +18,7 @@ final readonly class EmployeeProfile
         public CompensationProfile $compensation,
         public StatutoryProfile $statutory,
         public PayrollDetails $payrollDetails,
+        public AllocationProfile $allocation,
         public Money $bonusTaxShieldAmount,
         public array $metadata = [],
     ) {

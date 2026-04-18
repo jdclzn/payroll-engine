@@ -72,9 +72,13 @@ final class RateCalculator implements RateCalculatorContract
     public function calculate(CompanyProfile $company, EmployeeProfile $employee, PayrollPeriod $period): RateSnapshot
     {
         $monthlyBasic = $employee->compensation->monthlyBasicSalary;
-        $scheduledBasicPay = $period->isSpecialRun()
+        $normalizedRunType = $period->normalizedRunType();
+        $regularScheduledBasicPay = MoneyHelper::multiply($monthlyBasic, 12 / $company->periodsPerYear());
+        $scheduledBasicPay = ! $normalizedRunType->usesScheduledBasicPay()
             ? MoneyHelper::zero()
-            : MoneyHelper::multiply($monthlyBasic, 12 / $company->periodsPerYear());
+            : ($normalizedRunType->isFinalSettlement()
+                ? $this->proratedFinalSettlementBasicPay($employee, $period, $regularScheduledBasicPay)
+                : $regularScheduledBasicPay);
 
         $computedDailyRate = MoneyHelper::divide(MoneyHelper::multiply($monthlyBasic, 12), max($company->eemrFactor, 1));
         $fixedPerDayApplied = $company->fixedPerDayRate && $employee->compensation->fixedDailyRate !== null;
@@ -92,5 +96,27 @@ final class RateCalculator implements RateCalculatorContract
             hourlyRate: $hourlyRate,
             fixedPerDayApplied: $fixedPerDayApplied,
         );
+    }
+
+    private function proratedFinalSettlementBasicPay(
+        EmployeeProfile $employee,
+        PayrollPeriod $period,
+        \Money\Money $regularScheduledBasicPay,
+    ): \Money\Money {
+        $separationDate = $employee->employment->dateResigned;
+
+        if ($separationDate === null) {
+            return $regularScheduledBasicPay;
+        }
+
+        if ($separationDate->lessThan($period->startDate)) {
+            return MoneyHelper::zero($regularScheduledBasicPay);
+        }
+
+        $coveredDays = max(1, $period->startDate->diffInDays($period->endDate) + 1);
+        $payableEnd = $separationDate->lessThan($period->endDate) ? $separationDate : $period->endDate;
+        $payableDays = max(0, $period->startDate->diffInDays($payableEnd) + 1);
+
+        return MoneyHelper::multiply($regularScheduledBasicPay, $payableDays / $coveredDays);
     }
 }

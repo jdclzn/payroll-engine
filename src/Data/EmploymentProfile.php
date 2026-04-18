@@ -24,6 +24,10 @@ final readonly class EmploymentProfile
             return false;
         }
 
+        if ($period->isFinalSettlementRun()) {
+            return ! in_array($status, ['inactive', 'sabbatical', 'x', 's'], true);
+        }
+
         if ($this->dateResigned !== null && $this->dateResigned->lessThan($period->startDate)) {
             return false;
         }

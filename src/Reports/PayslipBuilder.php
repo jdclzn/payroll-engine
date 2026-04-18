@@ -3,6 +3,7 @@
 namespace Jdclzn\PayrollEngine\Reports;
 
 use Jdclzn\PayrollEngine\Data\PayrollLine;
+use Jdclzn\PayrollEngine\Data\PayrollIssue;
 use Jdclzn\PayrollEngine\Data\PayrollResult;
 use Jdclzn\PayrollEngine\Support\MoneyHelper;
 
@@ -30,10 +31,19 @@ final class PayslipBuilder
                 'full_name' => $result->employee->fullName,
                 'email' => $result->employee->email,
                 'position' => $result->employee->position,
-                'department' => $result->employee->employment->department,
+                'department' => $result->employee->allocation->department,
                 'account_number' => $result->employee->payrollDetails->accountNumber,
                 'bank' => $result->employee->payrollDetails->bank,
-                'branch' => $result->employee->payrollDetails->branch,
+                'branch' => $result->employee->allocation->branch,
+            ],
+            'allocation' => [
+                'project_code' => $result->employee->allocation->projectCode,
+                'project_name' => $result->employee->allocation->projectName,
+                'cost_center' => $result->employee->allocation->costCenter,
+                'branch' => $result->employee->allocation->branch,
+                'department' => $result->employee->allocation->department,
+                'vessel' => $result->employee->allocation->vessel,
+                'dimensions' => $result->employee->allocation->dimensions,
             ],
             'rates' => [
                 'monthly_basic_salary' => MoneyHelper::toFloat($result->rates->monthlyBasicSalary),
@@ -46,6 +56,7 @@ final class PayslipBuilder
             'employee_contributions' => $this->serializeLines($result->employeeContributions),
             'deductions' => $this->serializeLines($result->deductions),
             'separate_payouts' => $this->serializeLines($result->separatePayouts),
+            'issues' => $this->serializeIssues($result->issues),
             'totals' => [
                 'gross_pay' => MoneyHelper::toFloat($result->grossPay),
                 'taxable_income' => MoneyHelper::toFloat($result->taxableIncome),
@@ -71,6 +82,23 @@ final class PayslipBuilder
                 'metadata' => $line->metadata,
             ],
             $lines
+        );
+    }
+
+    /**
+     * @param  array<int, PayrollIssue>  $issues
+     * @return array<int, array<string, mixed>>
+     */
+    private function serializeIssues(array $issues): array
+    {
+        return array_map(
+            static fn (PayrollIssue $issue) => [
+                'code' => $issue->code,
+                'message' => $issue->message,
+                'severity' => $issue->severity,
+                'metadata' => $issue->metadata,
+            ],
+            $issues
         );
     }
 }

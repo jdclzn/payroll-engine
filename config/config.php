@@ -1,8 +1,10 @@
 <?php
 
 use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
+use Jdclzn\PayrollEngine\Calculators\PagIbigContributionCalculator;
 use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
 use Jdclzn\PayrollEngine\Calculators\RateCalculator;
+use Jdclzn\PayrollEngine\Calculators\VariableEarningCalculator;
 use Jdclzn\PayrollEngine\Calculators\WithholdingTaxCalculator;
 
 return [
@@ -171,6 +173,10 @@ return [
     | clients.<client_code>.overtime:
     |   Override only the overtime earning computation logic.
     |
+    | clients.<client_code>.variable_earnings:
+    |   Override variable earning logic such as sales commissions, production
+    |   incentives, or quota-based bonuses.
+    |
     | clients.<client_code>.withholding:
     |   Override only the withholding and bonus tax logic.
     |
@@ -190,6 +196,7 @@ return [
             'workflow' => PayrollCalculator::class,
             'rate' => RateCalculator::class,
             'overtime' => OvertimeCalculator::class,
+            'variable_earnings' => VariableEarningCalculator::class,
             'withholding' => WithholdingTaxCalculator::class,
             'pagibig' => PagIbigContributionCalculator::class,
         ],
@@ -198,6 +205,7 @@ return [
             'client-code' => [
                 'rate' => \App\Payroll\Strategies\ClientRateCalculator::class,
                 'overtime' => \App\Payroll\Strategies\ClientOvertimeCalculator::class,
+                'variable_earnings' => \App\Payroll\Strategies\ClientVariableEarningCalculator::class,
                 'withholding' => \App\Payroll\Strategies\ClientWithholdingTaxCalculator::class,
                 'pagibig' => \App\Payroll\Strategies\ClientPagIbigCalculator::class,
                 'workflow' => \App\Payroll\Strategies\ClientPayrollWorkflow::class,

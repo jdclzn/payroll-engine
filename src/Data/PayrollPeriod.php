@@ -3,6 +3,7 @@
 namespace Jdclzn\PayrollEngine\Data;
 
 use Carbon\CarbonImmutable;
+use Jdclzn\PayrollEngine\Enums\PayrollRunType;
 
 final readonly class PayrollPeriod
 {
@@ -15,8 +16,23 @@ final readonly class PayrollPeriod
     ) {
     }
 
+    public function normalizedRunType(): PayrollRunType
+    {
+        return PayrollRunType::parse($this->runType);
+    }
+
+    public function isOffCycleRun(): bool
+    {
+        return $this->normalizedRunType()->isOffCycle();
+    }
+
+    public function isFinalSettlementRun(): bool
+    {
+        return $this->normalizedRunType()->isFinalSettlement();
+    }
+
     public function isSpecialRun(): bool
     {
-        return strtolower($this->runType) !== 'regular';
+        return $this->isOffCycleRun();
     }
 }
