@@ -45,8 +45,16 @@
     "format:check": "vendor/bin/pint --test",
     "test": "vendor/bin/pest --configuration phpunit.xml.dist --ci",
     "release:check": "@php bin/release.php",
-    "release": "npm run release --",
-    "release:first": "npm run release -- --first-release"
+    "release": [
+      "@php bin/release.php",
+      "npm ci --no-fund --no-audit",
+      "npm exec --yes -- standard-version"
+    ],
+    "release:first": [
+      "@php bin/release.php",
+      "npm ci --no-fund --no-audit",
+      "npm exec --yes -- standard-version --first-release"
+    ]
   },
   "config": {
     "sort-packages": true,
