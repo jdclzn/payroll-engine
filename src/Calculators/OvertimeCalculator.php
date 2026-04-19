@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Calculators;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\OvertimeEntry;
@@ -10,7 +11,6 @@ use QuillBytes\PayrollEngine\Data\PayrollLine;
 use QuillBytes\PayrollEngine\Data\RateSnapshot;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use QuillBytes\PayrollEngine\Support\TraceMetadata;
-use Money\Money;
 
 /**
  * Default overtime computation strategy for the payroll engine.

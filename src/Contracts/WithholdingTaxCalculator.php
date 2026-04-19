@@ -2,11 +2,11 @@
 
 namespace QuillBytes\PayrollEngine\Contracts;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
 use QuillBytes\PayrollEngine\Data\PayrollInput;
 use QuillBytes\PayrollEngine\Data\PayrollLine;
-use Money\Money;
 
 interface WithholdingTaxCalculator
 {

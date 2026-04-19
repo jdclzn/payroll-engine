@@ -3,10 +3,10 @@
 namespace QuillBytes\PayrollEngine\Data;
 
 use Carbon\CarbonImmutable;
+use Money\Money;
 use QuillBytes\PayrollEngine\Enums\PayrollRunStatus;
 use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 final class PayrollRun
 {

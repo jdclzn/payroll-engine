@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Calculators;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
 use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
 use QuillBytes\PayrollEngine\Contracts\PayrollWorkflow;
@@ -17,7 +18,6 @@ use QuillBytes\PayrollEngine\Data\PayrollResult;
 use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use QuillBytes\PayrollEngine\Support\TraceMetadata;
-use Money\Money;
 
 final readonly class PayrollCalculator implements PayrollWorkflow
 {

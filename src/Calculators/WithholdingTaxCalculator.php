@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Calculators;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
@@ -10,7 +11,6 @@ use QuillBytes\PayrollEngine\Data\PayrollLine;
 use QuillBytes\PayrollEngine\Enums\TaxStrategy;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use QuillBytes\PayrollEngine\Support\TraceMetadata;
-use Money\Money;
 
 final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract
 {

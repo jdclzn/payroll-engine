@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Calculators;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
@@ -13,7 +14,6 @@ use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use QuillBytes\PayrollEngine\Support\TraceMetadata;
-use Money\Money;
 
 /**
  * Default Pag-IBIG contribution calculator for the payroll engine.

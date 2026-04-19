@@ -2,13 +2,13 @@
 
 namespace QuillBytes\PayrollEngine\Calculators;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
 use QuillBytes\PayrollEngine\Data\PayrollPeriod;
 use QuillBytes\PayrollEngine\Data\RateSnapshot;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 /**
  * Default rate-calculation strategy used by the payroll engine.

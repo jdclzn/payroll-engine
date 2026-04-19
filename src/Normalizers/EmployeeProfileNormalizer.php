@@ -3,6 +3,7 @@
 namespace QuillBytes\PayrollEngine\Normalizers;
 
 use Carbon\CarbonImmutable;
+use Money\Money;
 use QuillBytes\PayrollEngine\Data\AllocationProfile;
 use QuillBytes\PayrollEngine\Data\CompensationProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
@@ -12,7 +13,6 @@ use QuillBytes\PayrollEngine\Data\StatutoryProfile;
 use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 use QuillBytes\PayrollEngine\Support\AttributeReader;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 final class EmployeeProfileNormalizer
 {

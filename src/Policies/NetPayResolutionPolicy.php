@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Policies;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\EmployeeProfile;
@@ -12,7 +13,6 @@ use QuillBytes\PayrollEngine\Data\PayrollResult;
 use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
 use QuillBytes\PayrollEngine\Support\EdgeCasePolicyConfig;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 final readonly class NetPayResolutionPolicy implements PayrollEdgeCasePolicy
 {

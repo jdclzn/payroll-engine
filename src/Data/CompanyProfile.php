@@ -2,10 +2,10 @@
 
 namespace QuillBytes\PayrollEngine\Data;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Enums\PagIbigContributionMode;
 use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 use QuillBytes\PayrollEngine\Enums\TaxStrategy;
-use Money\Money;
 
 final readonly class CompanyProfile
 {

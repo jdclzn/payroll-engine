@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Support;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Data\Adjustment;
 use QuillBytes\PayrollEngine\Data\Deduction;
 use QuillBytes\PayrollEngine\Data\PayrollInput;
@@ -9,7 +10,6 @@ use QuillBytes\PayrollEngine\Data\PayrollLine;
 use QuillBytes\PayrollEngine\Data\PayrollPeriod;
 use QuillBytes\PayrollEngine\Data\PayrollResult;
 use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
-use Money\Money;
 
 final class RetroAdjustmentInputBuilder
 {

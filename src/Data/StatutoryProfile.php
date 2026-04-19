@@ -2,8 +2,8 @@
 
 namespace QuillBytes\PayrollEngine\Data;
 
-use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 use Money\Money;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 
 final readonly class StatutoryProfile
 {

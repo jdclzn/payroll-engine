@@ -2,8 +2,8 @@
 
 namespace QuillBytes\PayrollEngine\Data;
 
-use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 final readonly class CompensationProfile
 {

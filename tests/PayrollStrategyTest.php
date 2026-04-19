@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Tests;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
 use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
 use QuillBytes\PayrollEngine\Contracts\PayrollWorkflow as PayrollWorkflowContract;
@@ -17,7 +18,6 @@ use QuillBytes\PayrollEngine\Data\PayrollResult;
 use QuillBytes\PayrollEngine\Data\RateSnapshot;
 use QuillBytes\PayrollEngine\PayrollEngine;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 function clientSpecificRateCalculator(): RateCalculatorContract
 {

@@ -2,6 +2,7 @@
 
 namespace QuillBytes\PayrollEngine\Normalizers;
 
+use Money\Money;
 use QuillBytes\PayrollEngine\Data\Adjustment;
 use QuillBytes\PayrollEngine\Data\CompanyProfile;
 use QuillBytes\PayrollEngine\Data\Deduction;
@@ -12,7 +13,6 @@ use QuillBytes\PayrollEngine\Data\PayrollPeriod;
 use QuillBytes\PayrollEngine\Data\VariableEarningEntry;
 use QuillBytes\PayrollEngine\Support\AttributeReader;
 use QuillBytes\PayrollEngine\Support\MoneyHelper;
-use Money\Money;
 
 final class PayrollInputNormalizer
 {
