@@ -74,5 +74,7 @@
         "PayrollEngine": "QuillBytes\\PayrollEngine\\PayrollEngineFacade"
       }
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
