@@ -1,9 +1,9 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Validators;
+namespace QuillBytes\PayrollEngine\Validators;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
 
 final class CompanyProfileValidator
 {

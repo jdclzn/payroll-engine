@@ -1,18 +1,18 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Calculators;
+namespace QuillBytes\PayrollEngine\Calculators;
 
-use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PagIbigContributionResult;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionMode;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
-use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Jdclzn\PayrollEngine\Support\TraceMetadata;
+use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PagIbigContributionResult;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionMode;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
+use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 /**

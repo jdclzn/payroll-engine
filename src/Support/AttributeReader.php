@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Support;
+namespace QuillBytes\PayrollEngine\Support;
 
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;

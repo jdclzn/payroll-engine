@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Enums;
+namespace QuillBytes\PayrollEngine\Enums;
 
 enum PagIbigContributionMode: string
 {

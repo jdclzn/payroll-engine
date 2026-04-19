@@ -1,10 +1,10 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionMode;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
-use Jdclzn\PayrollEngine\Enums\TaxStrategy;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionMode;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
+use QuillBytes\PayrollEngine\Enums\TaxStrategy;
 use Money\Money;
 
 final readonly class CompanyProfile

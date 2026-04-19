@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine;
+namespace QuillBytes\PayrollEngine;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,13 +1,13 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
-use Jdclzn\PayrollEngine\Enums\PayrollRunStatus;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\PayrollEngine;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Enums\PayrollRunStatus;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 function engine(): PayrollEngine
 {

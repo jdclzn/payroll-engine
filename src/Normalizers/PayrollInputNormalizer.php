@@ -1,17 +1,17 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Normalizers;
+namespace QuillBytes\PayrollEngine\Normalizers;
 
-use Jdclzn\PayrollEngine\Data\Adjustment;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\Deduction;
-use Jdclzn\PayrollEngine\Data\LoanDeduction;
-use Jdclzn\PayrollEngine\Data\OvertimeEntry;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollPeriod;
-use Jdclzn\PayrollEngine\Data\VariableEarningEntry;
-use Jdclzn\PayrollEngine\Support\AttributeReader;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Data\Adjustment;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\Deduction;
+use QuillBytes\PayrollEngine\Data\LoanDeduction;
+use QuillBytes\PayrollEngine\Data\OvertimeEntry;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollPeriod;
+use QuillBytes\PayrollEngine\Data\VariableEarningEntry;
+use QuillBytes\PayrollEngine\Support\AttributeReader;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 final class PayrollInputNormalizer

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
-use Jdclzn\PayrollEngine\PayrollEngine;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 function retroEngine(): PayrollEngine
 {

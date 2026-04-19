@@ -1,12 +1,12 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Policies;
+namespace QuillBytes\PayrollEngine\Policies;
 
-use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
 
 final readonly class PayrollEdgeCasePolicyPipeline
 {

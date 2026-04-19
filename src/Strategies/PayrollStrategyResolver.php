@@ -1,22 +1,22 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Strategies;
+namespace QuillBytes\PayrollEngine\Strategies;
 
-use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
-use Jdclzn\PayrollEngine\Calculators\PagIbigContributionCalculator;
-use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
-use Jdclzn\PayrollEngine\Calculators\PhilHealthContributionCalculator;
-use Jdclzn\PayrollEngine\Calculators\RateCalculator;
-use Jdclzn\PayrollEngine\Calculators\SssContributionCalculator;
-use Jdclzn\PayrollEngine\Calculators\VariableEarningCalculator;
-use Jdclzn\PayrollEngine\Calculators\WithholdingTaxCalculator;
-use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\PayrollWorkflow;
-use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Calculators\OvertimeCalculator;
+use QuillBytes\PayrollEngine\Calculators\PagIbigContributionCalculator;
+use QuillBytes\PayrollEngine\Calculators\PayrollCalculator;
+use QuillBytes\PayrollEngine\Calculators\PhilHealthContributionCalculator;
+use QuillBytes\PayrollEngine\Calculators\RateCalculator;
+use QuillBytes\PayrollEngine\Calculators\SssContributionCalculator;
+use QuillBytes\PayrollEngine\Calculators\VariableEarningCalculator;
+use QuillBytes\PayrollEngine\Calculators\WithholdingTaxCalculator;
+use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\PayrollWorkflow;
+use QuillBytes\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
 
 final class PayrollStrategyResolver
 {

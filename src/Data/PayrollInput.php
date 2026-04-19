@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 final readonly class PayrollInput

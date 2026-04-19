@@ -1,13 +1,13 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Support;
+namespace QuillBytes\PayrollEngine\Support;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollIssue;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollIssue;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
 
 final class PayrollAuditTrailBuilder
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Reports;
+namespace QuillBytes\PayrollEngine\Reports;
 
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 final class PayrollRegisterBuilder
 {

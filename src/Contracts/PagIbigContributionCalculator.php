@@ -1,11 +1,11 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Contracts;
+namespace QuillBytes\PayrollEngine\Contracts;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PagIbigContributionResult;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PagIbigContributionResult;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
 
 interface PagIbigContributionCalculator
 {

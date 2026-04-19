@@ -1,19 +1,19 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
-use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
-use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollIssue;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Data\RateSnapshot;
-use Jdclzn\PayrollEngine\PayrollEngine;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Calculators\OvertimeCalculator;
+use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollIssue;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Data\RateSnapshot;
+use QuillBytes\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 function designRulesEngine(array $config = []): PayrollEngine
 {

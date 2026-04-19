@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
-use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
+use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
 
 final readonly class PayrollSchedule
 {

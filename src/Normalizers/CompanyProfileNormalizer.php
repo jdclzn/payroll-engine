@@ -1,17 +1,17 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Normalizers;
+namespace QuillBytes\PayrollEngine\Normalizers;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\PayrollSchedule;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionMode;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
-use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
-use Jdclzn\PayrollEngine\Enums\TaxStrategy;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
-use Jdclzn\PayrollEngine\Support\AttributeReader;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\PayrollSchedule;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionMode;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
+use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
+use QuillBytes\PayrollEngine\Enums\TaxStrategy;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Policies\ClientPolicyRegistry;
+use QuillBytes\PayrollEngine\Support\AttributeReader;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 final readonly class CompanyProfileNormalizer
 {

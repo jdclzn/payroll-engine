@@ -1,12 +1,12 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Normalizers;
+namespace QuillBytes\PayrollEngine\Normalizers;
 
 use Carbon\CarbonImmutable;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\PayrollPeriod;
-use Jdclzn\PayrollEngine\Enums\PayrollRunType;
-use Jdclzn\PayrollEngine\Support\AttributeReader;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\PayrollPeriod;
+use QuillBytes\PayrollEngine\Enums\PayrollRunType;
+use QuillBytes\PayrollEngine\Support\AttributeReader;
 
 final readonly class PayrollPeriodNormalizer
 {

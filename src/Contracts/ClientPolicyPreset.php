@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Contracts;
+namespace QuillBytes\PayrollEngine\Contracts;
 
 interface ClientPolicyPreset
 {

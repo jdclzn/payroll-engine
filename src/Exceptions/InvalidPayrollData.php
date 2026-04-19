@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Exceptions;
+namespace QuillBytes\PayrollEngine\Exceptions;
 
 use InvalidArgumentException;
 

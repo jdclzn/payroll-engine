@@ -1,16 +1,16 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Policies;
+namespace QuillBytes\PayrollEngine\Policies;
 
-use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\Deduction;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\LoanDeduction;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
+use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\Deduction;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\LoanDeduction;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Support\EdgeCasePolicyConfig;
 
 final readonly class DeductionOverlapPolicy implements PayrollEdgeCasePolicy
 {

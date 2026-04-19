@@ -1,10 +1,10 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Validators;
+namespace QuillBytes\PayrollEngine\Validators;
 
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 final class EmployeeProfileValidator
 {

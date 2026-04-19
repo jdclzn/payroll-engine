@@ -1,22 +1,22 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Calculators;
+namespace QuillBytes\PayrollEngine\Calculators;
 
-use Jdclzn\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\PayrollWorkflow;
-use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
-use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\LoanDeduction;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Enums\PayrollFrequency;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Jdclzn\PayrollEngine\Support\TraceMetadata;
+use QuillBytes\PayrollEngine\Contracts\OvertimeCalculator as OvertimeCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator as PagIbigContributionCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\PayrollWorkflow;
+use QuillBytes\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\VariableEarningCalculator as VariableEarningCalculatorContract;
+use QuillBytes\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\LoanDeduction;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Enums\PayrollFrequency;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final readonly class PayrollCalculator implements PayrollWorkflow

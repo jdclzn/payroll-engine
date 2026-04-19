@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Policies;
+namespace QuillBytes\PayrollEngine\Policies;
 
-use Jdclzn\PayrollEngine\Contracts\ClientPolicyPreset;
+use QuillBytes\PayrollEngine\Contracts\ClientPolicyPreset;
 
 final readonly class ClientPolicyRegistry
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
 use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
-use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
-use Jdclzn\PayrollEngine\PayrollEngine;
-use Jdclzn\PayrollEngine\PayrollEngineFacade;
-use Jdclzn\PayrollEngine\PayrollEngineServiceProvider;
+use QuillBytes\PayrollEngine\Calculators\PayrollCalculator;
+use QuillBytes\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngineFacade;
+use QuillBytes\PayrollEngine\PayrollEngineServiceProvider;
 
 function laravelIntegrationConfigRepository(array $items = []): object
 {

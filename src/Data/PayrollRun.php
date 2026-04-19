@@ -1,11 +1,11 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
 use Carbon\CarbonImmutable;
-use Jdclzn\PayrollEngine\Enums\PayrollRunStatus;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Enums\PayrollRunStatus;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 final class PayrollRun

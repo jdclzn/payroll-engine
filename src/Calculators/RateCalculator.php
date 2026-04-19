@@ -1,13 +1,13 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Calculators;
+namespace QuillBytes\PayrollEngine\Calculators;
 
-use Jdclzn\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollPeriod;
-use Jdclzn\PayrollEngine\Data\RateSnapshot;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Contracts\RateCalculator as RateCalculatorContract;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollPeriod;
+use QuillBytes\PayrollEngine\Data\RateSnapshot;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 /**

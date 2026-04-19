@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 it('creates and formats usd amounts using the selected currency', function () {
     $money = MoneyHelper::fromNumeric('1234.56', 'USD');

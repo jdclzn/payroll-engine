@@ -1,11 +1,11 @@
 <?php
 
-use Jdclzn\PayrollEngine\Calculators\OvertimeCalculator;
-use Jdclzn\PayrollEngine\Calculators\PagIbigContributionCalculator;
-use Jdclzn\PayrollEngine\Calculators\PayrollCalculator;
-use Jdclzn\PayrollEngine\Calculators\RateCalculator;
-use Jdclzn\PayrollEngine\Calculators\VariableEarningCalculator;
-use Jdclzn\PayrollEngine\Calculators\WithholdingTaxCalculator;
+use QuillBytes\PayrollEngine\Calculators\OvertimeCalculator;
+use QuillBytes\PayrollEngine\Calculators\PagIbigContributionCalculator;
+use QuillBytes\PayrollEngine\Calculators\PayrollCalculator;
+use QuillBytes\PayrollEngine\Calculators\RateCalculator;
+use QuillBytes\PayrollEngine\Calculators\VariableEarningCalculator;
+use QuillBytes\PayrollEngine\Calculators\WithholdingTaxCalculator;
 
 return [
     /*
@@ -229,7 +229,7 @@ return [
     |
     | When omitted, the package uses its default policy pipeline.
     | You may replace the whole pipeline by supplying class strings or policy
-    | instances that implement \Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy.
+    | instances that implement \QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy.
     |
     */
     'edge_case_policies' => [

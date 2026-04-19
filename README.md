@@ -1,10 +1,10 @@
 # Payroll Engine
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/jdclzn/payroll-engine.svg?style=flat-square)](https://packagist.org/packages/jdclzn/payroll-engine)
-[![Total Downloads](https://img.shields.io/packagist/dt/jdclzn/payroll-engine.svg?style=flat-square)](https://packagist.org/packages/jdclzn/payroll-engine)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/quillbytes/payroll-engine.svg?style=flat-square)](https://packagist.org/packages/quillbytes/payroll-engine)
+[![Total Downloads](https://img.shields.io/packagist/dt/quillbytes/payroll-engine.svg?style=flat-square)](https://packagist.org/packages/quillbytes/payroll-engine)
 ![GitHub Actions](https://github.com/jdclzn/payroll-engine/actions/workflows/main.yml/badge.svg)
 
-`jdclzn/payroll-engine` is a Laravel-friendly payroll computation library for applications that need a reusable, auditable, and customizable payroll core.
+`quillbytes/payroll-engine` is a Laravel-friendly payroll computation library for applications that need a reusable, auditable, and customizable payroll core.
 
 It ships with a Philippines-oriented default payroll model, but the package is intentionally strategy-based so tenant, client, company, or country-specific rules can be replaced without forking the package.
 
@@ -74,7 +74,7 @@ In a Laravel app, the normal pattern is:
 Install the package:
 
 ```bash
-composer require jdclzn/payroll-engine
+composer require quillbytes/payroll-engine
 ```
 
 The package uses Laravel package discovery, so the service provider and facade alias are registered automatically.
@@ -117,7 +117,7 @@ Example application-layer service:
 
 namespace App\Actions\Payroll;
 
-use Jdclzn\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngine;
 
 final class ComputeEmployeePayroll
 {
@@ -270,7 +270,7 @@ Useful optional payroll input fields:
 Resolve the service from Laravel's container:
 
 ```php
-use Jdclzn\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngine;
 
 $engine = app(PayrollEngine::class);
 ```
@@ -302,8 +302,8 @@ Common places to use this:
 - API endpoints that return a payslip preview
 
 ```php
-use Jdclzn\PayrollEngine\PayrollEngine;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 
 $engine = app(PayrollEngine::class);
 
@@ -388,7 +388,7 @@ If your Eloquent attributes already match the expected aliases, you can pass you
 ```php
 use App\Models\Company;
 use App\Models\Employee;
-use Jdclzn\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngine;
 
 $engine = app(PayrollEngine::class);
 
@@ -427,7 +427,7 @@ $employeePayload = [
 Use `run()` when your Laravel app needs to process a payroll period for many employees.
 
 ```php
-use Jdclzn\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngine;
 
 $engine = app(PayrollEngine::class);
 
@@ -827,7 +827,7 @@ In a Laravel app, this makes it easy to connect the package to:
 Important note:
 
 - the monetary totals in `PayrollResult` are `Money` objects
-- use `Jdclzn\PayrollEngine\Support\MoneyHelper::toFloat()` for output formatting
+- use `QuillBytes\PayrollEngine\Support\MoneyHelper::toFloat()` for output formatting
 
 ### `run()` Returns `PayrollRun`
 
@@ -928,12 +928,12 @@ The engine resolves strategy overrides through Laravel's container, so class str
 
 Available contracts:
 
-- `Jdclzn\PayrollEngine\Contracts\PayrollWorkflow`
-- `Jdclzn\PayrollEngine\Contracts\RateCalculator`
-- `Jdclzn\PayrollEngine\Contracts\OvertimeCalculator`
-- `Jdclzn\PayrollEngine\Contracts\VariableEarningCalculator`
-- `Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator`
-- `Jdclzn\PayrollEngine\Contracts\PagIbigContributionCalculator`
+- `QuillBytes\PayrollEngine\Contracts\PayrollWorkflow`
+- `QuillBytes\PayrollEngine\Contracts\RateCalculator`
+- `QuillBytes\PayrollEngine\Contracts\OvertimeCalculator`
+- `QuillBytes\PayrollEngine\Contracts\VariableEarningCalculator`
+- `QuillBytes\PayrollEngine\Contracts\WithholdingTaxCalculator`
+- `QuillBytes\PayrollEngine\Contracts\PagIbigContributionCalculator`
 
 Example custom workflow:
 
@@ -942,11 +942,11 @@ Example custom workflow:
 
 namespace App\Payroll\Strategies;
 
-use Jdclzn\PayrollEngine\Contracts\PayrollWorkflow;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Contracts\PayrollWorkflow;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
 
 final class TenantBPayrollWorkflow implements PayrollWorkflow
 {

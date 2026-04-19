@@ -1,10 +1,10 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Calculators;
+namespace QuillBytes\PayrollEngine\Calculators;
 
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Jdclzn\PayrollEngine\Support\TraceMetadata;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final class PhilHealthContributionCalculator

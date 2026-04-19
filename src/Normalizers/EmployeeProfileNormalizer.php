@@ -1,17 +1,17 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Normalizers;
+namespace QuillBytes\PayrollEngine\Normalizers;
 
 use Carbon\CarbonImmutable;
-use Jdclzn\PayrollEngine\Data\AllocationProfile;
-use Jdclzn\PayrollEngine\Data\CompensationProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\EmploymentProfile;
-use Jdclzn\PayrollEngine\Data\PayrollDetails;
-use Jdclzn\PayrollEngine\Data\StatutoryProfile;
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
-use Jdclzn\PayrollEngine\Support\AttributeReader;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Data\AllocationProfile;
+use QuillBytes\PayrollEngine\Data\CompensationProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\EmploymentProfile;
+use QuillBytes\PayrollEngine\Data\PayrollDetails;
+use QuillBytes\PayrollEngine\Data\StatutoryProfile;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
+use QuillBytes\PayrollEngine\Support\AttributeReader;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 final class EmployeeProfileNormalizer

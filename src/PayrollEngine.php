@@ -1,36 +1,36 @@
 <?php
 
-namespace Jdclzn\PayrollEngine;
+namespace QuillBytes\PayrollEngine;
 
 use Carbon\CarbonImmutable;
-use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollPeriod;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Data\PayrollRun;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Normalizers\CompanyProfileNormalizer;
-use Jdclzn\PayrollEngine\Normalizers\EmployeeProfileNormalizer;
-use Jdclzn\PayrollEngine\Normalizers\PayrollInputNormalizer;
-use Jdclzn\PayrollEngine\Normalizers\PayrollPeriodNormalizer;
-use Jdclzn\PayrollEngine\Policies\AttendanceDataPolicy;
-use Jdclzn\PayrollEngine\Policies\ClientPolicyRegistry;
-use Jdclzn\PayrollEngine\Policies\DeductionOverlapPolicy;
-use Jdclzn\PayrollEngine\Policies\NetPayResolutionPolicy;
-use Jdclzn\PayrollEngine\Policies\PayrollEdgeCasePolicyPipeline;
-use Jdclzn\PayrollEngine\Policies\RuleConflictPolicy;
-use Jdclzn\PayrollEngine\Reports\PayrollAllocationSummaryBuilder;
-use Jdclzn\PayrollEngine\Reports\PayrollRegisterBuilder;
-use Jdclzn\PayrollEngine\Reports\PayslipBuilder;
-use Jdclzn\PayrollEngine\Strategies\PayrollStrategyResolver;
-use Jdclzn\PayrollEngine\Support\AttributeReader;
-use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
-use Jdclzn\PayrollEngine\Support\PayrollAuditTrailBuilder;
-use Jdclzn\PayrollEngine\Support\PayrollResultTraceEnricher;
-use Jdclzn\PayrollEngine\Support\RetroAdjustmentInputBuilder;
-use Jdclzn\PayrollEngine\Validators\CompanyProfileValidator;
-use Jdclzn\PayrollEngine\Validators\EmployeeProfileValidator;
-use Jdclzn\PayrollEngine\Validators\PayrollInputValidator;
+use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollPeriod;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Data\PayrollRun;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Normalizers\CompanyProfileNormalizer;
+use QuillBytes\PayrollEngine\Normalizers\EmployeeProfileNormalizer;
+use QuillBytes\PayrollEngine\Normalizers\PayrollInputNormalizer;
+use QuillBytes\PayrollEngine\Normalizers\PayrollPeriodNormalizer;
+use QuillBytes\PayrollEngine\Policies\AttendanceDataPolicy;
+use QuillBytes\PayrollEngine\Policies\ClientPolicyRegistry;
+use QuillBytes\PayrollEngine\Policies\DeductionOverlapPolicy;
+use QuillBytes\PayrollEngine\Policies\NetPayResolutionPolicy;
+use QuillBytes\PayrollEngine\Policies\PayrollEdgeCasePolicyPipeline;
+use QuillBytes\PayrollEngine\Policies\RuleConflictPolicy;
+use QuillBytes\PayrollEngine\Reports\PayrollAllocationSummaryBuilder;
+use QuillBytes\PayrollEngine\Reports\PayrollRegisterBuilder;
+use QuillBytes\PayrollEngine\Reports\PayslipBuilder;
+use QuillBytes\PayrollEngine\Strategies\PayrollStrategyResolver;
+use QuillBytes\PayrollEngine\Support\AttributeReader;
+use QuillBytes\PayrollEngine\Support\EdgeCasePolicyConfig;
+use QuillBytes\PayrollEngine\Support\PayrollAuditTrailBuilder;
+use QuillBytes\PayrollEngine\Support\PayrollResultTraceEnricher;
+use QuillBytes\PayrollEngine\Support\RetroAdjustmentInputBuilder;
+use QuillBytes\PayrollEngine\Validators\CompanyProfileValidator;
+use QuillBytes\PayrollEngine\Validators\EmployeeProfileValidator;
+use QuillBytes\PayrollEngine\Validators\PayrollInputValidator;
 
 class PayrollEngine
 {

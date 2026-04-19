@@ -1,5 +1,5 @@
 {
-  "name": "jdclzn/payroll-engine",
+  "name": "quillbytes/payroll-engine",
   "description": "Reusable Laravel payroll engine for scalable, auditable, and customizable payroll computation.",
   "keywords": [
     "payroll",
@@ -7,9 +7,9 @@
     "payroll-engine-laravel",
     "payroll-engine-php",
     "moneyphp",
-    "jdclzn"
+    "quillbytes"
   ],
-  "homepage": "https://github.com/jdaclizon23/payroll-engine",
+  "homepage": "https://github.com/jdclzn/payroll-engine",
   "license": "MIT",
   "type": "library",
   "authors": [
@@ -32,12 +32,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Jdclzn\\PayrollEngine\\": "src/"
+      "QuillBytes\\PayrollEngine\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Jdclzn\\PayrollEngine\\Tests\\": "tests/"
+      "QuillBytes\\PayrollEngine\\Tests\\": "tests/"
     }
   },
   "scripts": {
@@ -68,10 +68,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Jdclzn\\PayrollEngine\\PayrollEngineServiceProvider"
+        "QuillBytes\\PayrollEngine\\PayrollEngineServiceProvider"
       ],
       "aliases": {
-        "PayrollEngine": "Jdclzn\\PayrollEngine\\PayrollEngineFacade"
+        "PayrollEngine": "QuillBytes\\PayrollEngine\\PayrollEngineFacade"
       }
     }
   }

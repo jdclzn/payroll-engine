@@ -1,15 +1,15 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Calculators;
+namespace QuillBytes\PayrollEngine\Calculators;
 
-use Jdclzn\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Enums\TaxStrategy;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
-use Jdclzn\PayrollEngine\Support\TraceMetadata;
+use QuillBytes\PayrollEngine\Contracts\WithholdingTaxCalculator as WithholdingTaxCalculatorContract;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Enums\TaxStrategy;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Support\TraceMetadata;
 use Money\Money;
 
 final class WithholdingTaxCalculator implements WithholdingTaxCalculatorContract

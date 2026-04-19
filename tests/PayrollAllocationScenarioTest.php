@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Tests;
+namespace QuillBytes\PayrollEngine\Tests;
 
-use Jdclzn\PayrollEngine\PayrollEngine;
+use QuillBytes\PayrollEngine\PayrollEngine;
 
 function allocationEngine(): PayrollEngine
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Support;
+namespace QuillBytes\PayrollEngine\Support;
 
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
 
 final class PayrollResultTraceEnricher
 {

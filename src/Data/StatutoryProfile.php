@@ -1,8 +1,8 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
-use Jdclzn\PayrollEngine\Enums\PagIbigContributionSchedule;
+use QuillBytes\PayrollEngine\Enums\PagIbigContributionSchedule;
 use Money\Money;
 
 final readonly class StatutoryProfile

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
 final readonly class AllocationProfile
 {

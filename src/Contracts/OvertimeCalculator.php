@@ -1,11 +1,11 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Contracts;
+namespace QuillBytes\PayrollEngine\Contracts;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\RateSnapshot;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\RateSnapshot;
 
 interface OvertimeCalculator
 {

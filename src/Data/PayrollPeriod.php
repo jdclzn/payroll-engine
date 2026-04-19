@@ -1,9 +1,9 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Data;
+namespace QuillBytes\PayrollEngine\Data;
 
 use Carbon\CarbonImmutable;
-use Jdclzn\PayrollEngine\Enums\PayrollRunType;
+use QuillBytes\PayrollEngine\Enums\PayrollRunType;
 
 final readonly class PayrollPeriod
 {

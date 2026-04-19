@@ -1,6 +1,6 @@
 <?php
 
-namespace Jdclzn\PayrollEngine;
+namespace QuillBytes\PayrollEngine;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;

@@ -1,17 +1,17 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Policies;
+namespace QuillBytes\PayrollEngine\Policies;
 
-use Jdclzn\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollInput;
-use Jdclzn\PayrollEngine\Data\PayrollIssue;
-use Jdclzn\PayrollEngine\Data\PayrollLine;
-use Jdclzn\PayrollEngine\Data\PayrollResult;
-use Jdclzn\PayrollEngine\Exceptions\InvalidPayrollData;
-use Jdclzn\PayrollEngine\Support\EdgeCasePolicyConfig;
-use Jdclzn\PayrollEngine\Support\MoneyHelper;
+use QuillBytes\PayrollEngine\Contracts\PayrollEdgeCasePolicy;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollInput;
+use QuillBytes\PayrollEngine\Data\PayrollIssue;
+use QuillBytes\PayrollEngine\Data\PayrollLine;
+use QuillBytes\PayrollEngine\Data\PayrollResult;
+use QuillBytes\PayrollEngine\Exceptions\InvalidPayrollData;
+use QuillBytes\PayrollEngine\Support\EdgeCasePolicyConfig;
+use QuillBytes\PayrollEngine\Support\MoneyHelper;
 use Money\Money;
 
 final readonly class NetPayResolutionPolicy implements PayrollEdgeCasePolicy

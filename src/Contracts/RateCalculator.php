@@ -1,11 +1,11 @@
 <?php
 
-namespace Jdclzn\PayrollEngine\Contracts;
+namespace QuillBytes\PayrollEngine\Contracts;
 
-use Jdclzn\PayrollEngine\Data\CompanyProfile;
-use Jdclzn\PayrollEngine\Data\EmployeeProfile;
-use Jdclzn\PayrollEngine\Data\PayrollPeriod;
-use Jdclzn\PayrollEngine\Data\RateSnapshot;
+use QuillBytes\PayrollEngine\Data\CompanyProfile;
+use QuillBytes\PayrollEngine\Data\EmployeeProfile;
+use QuillBytes\PayrollEngine\Data\PayrollPeriod;
+use QuillBytes\PayrollEngine\Data\RateSnapshot;
 
 /**
  * Strategy contract for resolving payroll rates for a specific client flow.
