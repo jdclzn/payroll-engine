@@ -1,0 +1,10 @@
+/.github export-ignore
+/tests export-ignore
+/.gitignore export-ignore
+/phpunit.xml.dist export-ignore
+/pint.json export-ignore
+/.versionrc.json export-ignore
+/CONTRIBUTING.md export-ignore
+/package.json export-ignore
+/package-lock.json export-ignore
+/composer.lock export-ignore
